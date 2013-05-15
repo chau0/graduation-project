@@ -25,6 +25,7 @@
 		sortableOpacity="0"
 		sortablePlaceholder="ui-state-highlight"
 		sortableForcePlaceholderSize="true"
+		height="450"
 		>
 	<sjg:gridColumn name="id" index="id" key="true" title="ID" width="30" formatter="integer" sortable="true"
 	                sorttype="int"/>

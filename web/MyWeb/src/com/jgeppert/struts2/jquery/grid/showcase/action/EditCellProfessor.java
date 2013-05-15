@@ -29,8 +29,10 @@ import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 
+import com.googlecode.s2hibernate.struts2.plugin.annotations.TransactionTarget;
 import com.jgeppert.struts2.jquery.grid.showcase.dao.ProfessorsDao;
 import com.jgeppert.struts2.jquery.grid.showcase.model.Customer;
 import com.jgeppert.struts2.jquery.grid.showcase.model.CustomerDAO;
@@ -38,8 +40,8 @@ import com.jgeppert.struts2.jquery.grid.showcase.model.Professors;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Actions({ @Action(value = "/edit-cell-professor", results = {
-		@Result(location = "../simpleecho.jsp", name = "success"),
-		@Result(location = "../simpleecho.jsp", name = "input") }) })
+		@Result(location = "simpleecho.jsp", name = "success"),
+		@Result(location = "simpleecho.jsp", name = "input") }) })
 public class EditCellProfessor extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = -3454448309088641394L;
@@ -49,32 +51,30 @@ public class EditCellProfessor extends ActionSupport implements SessionAware {
 	private String name;
 	private double creditLimit;
 	private Map<String, Object> session;
-	private List<Professors> listProfessors;
+//	private List<Professors> listProfessors;
 	private ProfessorsDao professorsDao = new ProfessorsDao();
-
+	@TransactionTarget
+	protected Transaction hTransaction;
 	@SuppressWarnings("unchecked")
 	public String execute() throws Exception {
 		log.debug("id :" + id + " creditLimit :" + creditLimit);
 
-		Object list = session.get("mylist");
-		if (list != null) {
-			listProfessors = (List<Professors>) list;
-		} else {
-			DetachedCriteria criteria = DetachedCriteria
-					.forClass(Professors.class);
-			int records = professorsDao.countByCriteria(criteria);
-			criteria.setProjection(null);
-			criteria.setResultTransformer(Criteria.ROOT_ENTITY);
-
-			// Get Customers by Criteria
-			listProfessors = professorsDao.findByCriteria(criteria, 0, records);
-		}
-
-		Professors professors = professorsDao.findById(id);
+//		Object list = session.get("mylist");
+		
+		Professors professors = professorsDao.get(id);
 		if (professors != null)
+		{
 			professors.setName(name);
-
-		session.put("mylist", listProfessors);
+			professorsDao.update(professors);
+		}
+		hTransaction.commit();
+//		if (list != null) {
+//			listProfessors = (List<Professors>) list;
+//		} else {
+//			// Get Customers by Criteria
+//			listProfessors = professorsDao.getAll();
+//		}
+//		session.put("mylist", listProfessors);
 
 		return SUCCESS;
 	}
