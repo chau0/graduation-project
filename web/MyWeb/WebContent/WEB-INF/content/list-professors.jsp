@@ -26,6 +26,7 @@
 		sortablePlaceholder="ui-state-highlight"
 		sortableForcePlaceholderSize="true"
 		height="450"
+		navigatorAddOptions="{height:280,reloadAfterSubmit:true}"
 		>
 	<sjg:gridColumn name="id" index="id" key="true" title="ID" width="30" formatter="integer" sortable="true"
 	                sorttype="int"/>
