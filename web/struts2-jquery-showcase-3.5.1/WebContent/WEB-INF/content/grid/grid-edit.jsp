@@ -10,7 +10,7 @@
 <s:url var="editurl" action="edit-grid-entry" namespace="/grid" />
 <sjg:grid id="gridedittable" caption="Customers Examples (Editable)"
 	dataType="json" href="%{remoteurl}" pager="true" navigator="true"
-	navigatorSearchOptions="{sopt:['eq','ne','lt','gt']}"
+<%-- 	navigatorSearchOptions="{sopt:['eq','ne','lt','gt']}"
  navigatorAddOptions="{height:280,reloadAfterSubmit:true}" 
 	navigatorEditOptions="{height:280,reloadAfterSubmit:false}"
 	navigatorEdit="false" navigatorView="false" navigatorDelete="true"
@@ -29,7 +29,7 @@
 	    		title : 'Alert', 
 	    		onclick: function(){ alert('Grid Button clicked!') }
     		}
-    	}" 
+    	}" --%> 
 	gridModel="gridModel" rowList="10,15,20" rowNum="15"
 	editurl="%{editurl}" editinline="true" onSelectRowTopics="rowselect"
 	onEditInlineSuccessTopics="oneditsuccess" viewrecords="true"
