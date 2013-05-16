@@ -12,11 +12,8 @@
 <s:url var="editcellurl" action="edit-cell-professor" />
 <sjg:grid
 		id="gridloadtable"
-		loadonce="true"
 		href="%{remoteurl}"
 		gridModel="gridModel"
-		rowNum="-1"
-		hidegrid="true"
 		scroll="true"
 		cellEdit="true"
 		cellurl="%{editcellurl}"
@@ -25,12 +22,26 @@
 		sortableOpacity="0"
 		sortablePlaceholder="ui-state-highlight"
 		sortableForcePlaceholderSize="true"
-		height="450"
-		navigatorAddOptions="{height:280,reloadAfterSubmit:true}"
+		loadonce="true"
+	    rowNum="-1"
+	    pager="true"
+	    height="450"
+	    navigator="true"
+	    navigatorAddOptions="{height:280,reloadAfterSubmit:true}"
+		navigatorEditOptions="{height:280,reloadAfterSubmit:false}"
+	    navigatorInlineEditButtons="true"
+	    navigatorAdd="false"
+	    navigatorEdit="false"
+	    navigatorRefresh="false"
+	    navigatorSearch="false"
+	    editurl="editcellurl"
+	    onSelectRowTopics="rowselect"
+		onEditInlineSuccessTopics="oneditsuccess"
+	    editinline="true"
 		>
 	<sjg:gridColumn name="id" index="id" key="true" title="ID" width="30" formatter="integer" sortable="true"
 	                sorttype="int"/>
-	<sjg:gridColumn name="name" index="name" title="Name" width="550" sortable="true" editable="true"/>
+	<sjg:gridColumn name="name" index="name" title="Name" width="550" sortable="true"  />
 
 </sjg:grid>
 

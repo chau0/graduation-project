@@ -49,32 +49,33 @@ public class EditCellProfessor extends ActionSupport implements SessionAware {
 
 	private int id;
 	private String name;
-	private double creditLimit;
+
 	private Map<String, Object> session;
-//	private List<Professors> listProfessors;
+	// private List<Professors> listProfessors;
 	private ProfessorsDao professorsDao = new ProfessorsDao();
 	@TransactionTarget
 	protected Transaction hTransaction;
 	@SuppressWarnings("unchecked")
-	public String execute() throws Exception {
-		log.debug("id :" + id + " creditLimit :" + creditLimit);
+	private String oper = "";
 
-//		Object list = session.get("mylist");
-		
+	public String execute() throws Exception {
+		log.debug("id :" + id + " oper :" + oper);
+
+		// Object list = session.get("mylist");
+
 		Professors professors = professorsDao.get(id);
-		if (professors != null)
-		{
+		if (professors != null) {
 			professors.setName(name);
 			professorsDao.update(professors);
 		}
 		hTransaction.commit();
-//		if (list != null) {
-//			listProfessors = (List<Professors>) list;
-//		} else {
-//			// Get Customers by Criteria
-//			listProfessors = professorsDao.getAll();
-//		}
-//		session.put("mylist", listProfessors);
+		// if (list != null) {
+		// listProfessors = (List<Professors>) list;
+		// } else {
+		// // Get Customers by Criteria
+		// listProfessors = professorsDao.getAll();
+		// }
+		// session.put("mylist", listProfessors);
 
 		return SUCCESS;
 	}
