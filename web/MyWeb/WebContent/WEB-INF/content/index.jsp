@@ -43,20 +43,20 @@
 <body>
 
 <header class="ui-widget-header">
-	<div class="ym-wrapper">
 		<div class="ym-wbox" style="padding: 5px 0 0 0;">
 			<div>
 				<h1 class="ui-state-default" style="background: none; border: none; margin: 0;">Showcase for Struts2 jQuery Grid Plugin and Full Hibernate Struts2 Plugins</h1>
 				<h4 class="ui-state-default" style="background: none; border: none;">Struts2 jQuery Plugin - Version <s:text name="showcase.version"/> / Full Hibernate Plugin - Version 2.2.1 GA</h4>
 			</div>
-	</div>
+	    </div>
 </header>
 
 <nav id="nav" class="ui-widget-header">
 	<div class="ym-wrapper">
 		<div class="ym-hlist">
 			<ul id="navlist">
-				<li><s:url var="urlgrid" action="list-professors" /><sj:a id="gridlink" href="%{urlgrid}" targets="main_content">Grid (Editable)</sj:a></li>
+				<li><s:url var="urlgrid" action="list-professors-new" /><sj:a id="gridlink" href="%{urlgrid}" targets="main_content">Grid (Editable)</sj:a></li><!--  -->
+<%-- 				<li><s:url var="urlgrid" action="grid-edit" /><sj:a id="gridlink" href="%{urlgrid}" targets="main_content">Grid (Editable)</sj:a></li> --%>
 				<li><s:url var="urlgridsubgrid" action="grid-subgrid" /><sj:a id="gridsubgridlink" href="%{urlgridsubgrid}" targets="main_content">Grid with Subgrid</sj:a></li>
 				<li><s:url var="urlgriddnd" action="grid-dnd" /><sj:a id="griddndlink" href="%{urlgriddnd}" targets="main_content">Grid with Drag and Drop</sj:a></li>
 				<li><a href="http://code.google.com/p/struts2-jquery/">Struts2 jQuery Plugin</a></li>

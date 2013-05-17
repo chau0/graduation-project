@@ -26,18 +26,18 @@
 		navigatorDeleteOptions="{height:280,reloadAfterSubmit:true}"
 		navigatorInlineEditButtons="true"
 		gridModel="gridModel"
-		rowNum="-1"
+		rowNum="20"
 		editurl="%{editlink}"
 		editinline="true"
 		onSelectRowTopics="rowselect"
 		onEditInlineSuccessTopics="oneditsuccess"
 		viewrecords="true"
 		shrinkToFit="false"
-		height="450"
+	
 		>
 	<sjg:gridColumn name="id" frozen="true" index="id" title="ID" width="60" formatter="integer" editable="false"
 	                sortable="false" />
-	<sjg:gridColumn name="name" index="name" title="Name" width="450" editable="true" edittype="text" sortable="true"
+	<sjg:gridColumn name="name" index="name" title="Name" width="450" editable="true" edittype="text" sortable="false"
 	                search="false"/>
 
 </sjg:grid>

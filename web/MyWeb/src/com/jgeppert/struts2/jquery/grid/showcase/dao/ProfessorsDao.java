@@ -74,7 +74,7 @@ public class ProfessorsDao extends
 		try {
 			DetachedCriteria dc = DetachedCriteria.forClass(Professors.class);
 			Criteria criteria = dc.getExecutableCriteria(hSession);
-			criteria.setProjection(Projections.max("customernumber"));
+			criteria.setProjection(Projections.max("id"));
 			return ((Integer) criteria.list().get(0)).intValue() + 1;
 		} catch (HibernateException e) {
 			log.error(e.getMessage(), e);

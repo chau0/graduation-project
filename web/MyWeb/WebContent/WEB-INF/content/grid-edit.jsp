@@ -7,17 +7,16 @@
 	A editable Grid with pager and navigator. Entries are editable when a cell is selected. This Grid is sortable by
 	name column and searchable by id. The first two Columns are frozen.
 </p>
-<s:url var="remoteurl" action="professor-data-provider" />
-<s:url var="editlink" action="edit-grid-professor" />
+<s:url var="remoteurl" action="grid-data-provider" />
+<s:url var="editlink" action="edit-grid-entry" />
 <sjg:grid
-
 		id="gridmultitable"
-		loadonce="true"
+		caption="Customers Examples (Editable)"
 		dataType="json"
 		href="%{remoteurl}"
 		pager="true"
 		navigator="true"
-	    navigatorSearch="false"
+		navigatorSearchOptions="{sopt:['eq','ne','lt','gt']}"
 		navigatorAddOptions="{height:280,reloadAfterSubmit:true}"
 		navigatorEditOptions="{height:280,reloadAfterSubmit:false}"
 		navigatorEdit="false"
@@ -25,19 +24,33 @@
 		navigatorDelete="true"
 		navigatorDeleteOptions="{height:280,reloadAfterSubmit:true}"
 		navigatorInlineEditButtons="true"
+		navigatorExtraButtons="{
+    		seperator: { 
+    			title : 'seperator'  
+    		}, 
+    		hide : { 
+	    		title : 'Show/Hide', 
+	    		icon: 'ui-icon-wrench', 
+	    		topic: 'showcolumns'
+    		},
+    		alert : { 
+	    		title : 'Alert', 
+	    		onclick: function(){ alert('Grid Button clicked!') }
+    		}
+    	}"
 		gridModel="gridModel"
-		rowNum="-1"
+		rowList="10,15,20"
+		rowNum="15"
 		editurl="%{editlink}"
 		editinline="true"
 		onSelectRowTopics="rowselect"
 		onEditInlineSuccessTopics="oneditsuccess"
 		viewrecords="true"
+		width="700"
 		shrinkToFit="false"
-		height="450"
 		>
 	<sjg:gridColumn name="id" frozen="true" index="id" title="ID" width="60" formatter="integer" editable="false"
-	                sortable="false" />
-	<sjg:gridColumn name="name" index="name" title="Name" width="450" editable="true" edittype="text" sortable="true"
+	                sortable="false" search="true" searchoptions="{sopt:['eq','ne','lt','gt']}"/>
+	<sjg:gridColumn name="name" index="name" title="Name" width="250" editable="true" edittype="text" sortable="true"
 	                search="false"/>
-
 </sjg:grid>

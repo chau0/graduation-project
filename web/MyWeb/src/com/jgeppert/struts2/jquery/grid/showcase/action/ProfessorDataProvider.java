@@ -46,7 +46,7 @@ public class ProfessorDataProvider extends ActionSupport implements
 
 	// Your result List
 	private List<Professors> gridModel;
-
+	private Map<String, Object> session;
 	// All Records
 	private Integer records = 0;
 
@@ -54,6 +54,7 @@ public class ProfessorDataProvider extends ActionSupport implements
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
+		log.debug("reload list prof");
 		// Criteria to Build SQL
 		DetachedCriteria criteria = DetachedCriteria.forClass(Professors.class);
 
@@ -65,7 +66,13 @@ public class ProfessorDataProvider extends ActionSupport implements
 		criteria.setResultTransformer(Criteria.ROOT_ENTITY);
 
 		// Get Customers by Criteria
-		gridModel = professorsDao.getAll();
+		gridModel = (List<Professors>) this.session.get("list_professors");
+		if (gridModel == null) {
+			gridModel = professorsDao.getAll();
+			this.session.put("list_professors", gridModel);
+		}
+		
+
 		return SUCCESS;
 	}
 
@@ -93,9 +100,8 @@ public class ProfessorDataProvider extends ActionSupport implements
 	}
 
 	@Override
-	public void setSession(Map<String, Object> arg0) {
-		// TODO Auto-generated method stub
-
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
 	}
 
 }
