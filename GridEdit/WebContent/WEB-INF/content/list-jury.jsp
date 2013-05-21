@@ -89,8 +89,10 @@
 
 	<div id="main">
 		<div class="ym-wrapper">
+		
 			<h2>Danh sách hội đồng bảo vệ</h2>
 			<p class="text"></p>
+			<s:url var="editurl" action="edit-jury" />
 			<s:url var="selectprofurl" action="professor-names" />
 			<s:url var="remoteurl" action="jury-data-provider" />
 			<sjg:grid 
