@@ -1,25 +1,33 @@
 package web.shedule.action;
 
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.transaction.JRun4TransactionManagerLookup;
 
 import web.shedule.dao.JuryDao;
+import web.shedule.dao.StudentDao;
+import web.shedule.model.Jury;
+import web.shedule.model.Students;
 
 import com.googlecode.s2hibernate.struts2.plugin.annotations.TransactionTarget;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Results({ @Result(name = "error", location = "messages.jsp") })
-public class EditJuryAction extends ActionSupport {
+public class EditJuryAction extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = -3454448309088641394L;
 	private static final Log log = LogFactory.getLog(EditJuryAction.class);
 
 	private JuryDao juryDao = new JuryDao();
+	private StudentDao studentDao = new StudentDao();
 
 	private String oper = "edit";
 	private String presidentName;
@@ -27,53 +35,60 @@ public class EditJuryAction extends ActionSupport {
 	private String examinerName1;
 	private String examinerName2;
 	private String additionalmemberName;
-	private String idju;
+	private String id;
 	private String name;
 	private String title;
+	private Map<String, Object> session;
 
 	@TransactionTarget
 	protected Transaction hTransaction;
 
 	public String execute() throws Exception {
-		System.out.println("excute :" + oper);
+		System.out.println("excute========================= :" + oper);
 		log.debug("excute :" + oper);
-		log.debug("president:" + presidentName);
-		log.debug("secretaryName:" + secretaryName);
-		log.debug("examinerName1:" + examinerName1);
-		log.debug("examinerName2:" + examinerName2);
-		log.debug("additionalmemberName:" + additionalmemberName);
-
+		int idSet = (Integer) this.session.get("set");
+		System.out.println("id set:" + idSet);
+		System.out.println("name:" + name);
+		System.out.println("title:" + title);
+		System.out.println("id:" + id);
+		System.out.println("president:" + presidentName);
+		System.out.println("secretaryName:" + secretaryName);
+		System.out.println("examinerName1:" + examinerName1);
+		System.out.println("examinerName2:" + examinerName2);
+		System.out.println("additionalmemberName:" + additionalmemberName);
 		try {
 			if (oper.equalsIgnoreCase("add")) {
-				/*
-				 * log.debug("Add Customer"); customer = new Customers();
-				 * 
-				 * int nextid = customersDao.nextCustomerNumber();
-				 * log.debug("Id for ne Customer is " + nextid);
-				 * customer.setCustomernumber(nextid);
-				 * customer.setCustomername(customername);
-				 * customer.setCountry(country); customer.setCity(city);
-				 * customer.setCreditlimit(creditlimit);
-				 * customer.setContactfirstname(contactfirstname);
-				 * customer.setContactlastname(contactlastname);
-				 * 
-				 * if (salesemployee != null) {
-				 * customer.setSalesemployee(employeeDao.get(salesemployee
-				 * .getEmployeenumber())); }
-				 * 
-				 * customersDao.save(customer);
-				 */
+				int nextStudentId = studentDao.getNextId();
+				Students students = new Students(nextStudentId, name, title);
+				studentDao.save(students);
+				
+				Jury jury = new Jury();
+				jury.setAdditionalmember(Integer.parseInt(additionalmemberName));
+				jury.setExaminer1(Integer.parseInt(examinerName1));
+				jury.setExaminer2(Integer.parseInt(examinerName2));
+				int nextJuryId=juryDao.getNextId();
+				System.out.println("nextJuryId:" + nextJuryId);
+				jury.setId(nextJuryId);
+				jury.setSecretary(Integer.parseInt(secretaryName));
+				jury.setIdsv(students.getId());
+				jury.setPresident(Integer.parseInt(presidentName));
+				jury.setIdset(idSet);
+				jury.setSupervisor(1);
+				juryDao.save(jury);
 			} else if (oper.equalsIgnoreCase("edit")) {
 				log.debug("Edit Jury");
-
+				Jury jury = juryDao.get(Integer.parseInt(id));
+				Students students=studentDao.get(jury.getIdsv());
+				students.setName(name);
+				studentDao.update(students);
+				jury.setAdditionalmember(Integer.parseInt(additionalmemberName));
+				jury.setExaminer1(Integer.parseInt(examinerName1));
+				jury.setExaminer2(Integer.parseInt(examinerName2));
+				jury.setPresident(Integer.parseInt(presidentName));
+				jury.setSecretary(Integer.parseInt(secretaryName));
+				juryDao.update(jury);
 			} else if (oper.equalsIgnoreCase("del")) {
-				/*
-				 * StringTokenizer ids = new StringTokenizer(id, ","); while
-				 * (ids.hasMoreTokens()) { int removeId =
-				 * Integer.parseInt(ids.nextToken());
-				 * log.debug("Delete Customer " + removeId);
-				 * customersDao.delete(removeId); }
-				 */
+				juryDao.delete(Integer.parseInt(id));
 			}
 
 			// Commit changes
@@ -91,14 +106,6 @@ public class EditJuryAction extends ActionSupport {
 
 	public void setOper(String oper) {
 		this.oper = oper;
-	}
-
-	public JuryDao getJuryDao() {
-		return juryDao;
-	}
-
-	public void setJuryDao(JuryDao juryDao) {
-		this.juryDao = juryDao;
 	}
 
 	public String getPresidentName() {
@@ -141,12 +148,12 @@ public class EditJuryAction extends ActionSupport {
 		this.additionalmemberName = additionalmemberName;
 	}
 
-	public String getIdju() {
-		return idju;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public void setIdju(String idju) {
-		this.idju = idju;
+	public String getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -163,6 +170,11 @@ public class EditJuryAction extends ActionSupport {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Override
+	public void setSession(Map<String, Object> arg0) {
+		this.session = arg0;
 	}
 
 }

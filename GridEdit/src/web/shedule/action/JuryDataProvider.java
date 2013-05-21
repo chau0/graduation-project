@@ -37,15 +37,15 @@ import web.shedule.dao.StudentDao;
 import web.shedule.model.Jury;
 import web.shedule.model.Professors;
 import web.shedule.model.Students;
+import web.shedule.util.Debug;
 
-import com.jgeppert.struts2.jquery.showcase.GridDataProvider;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
 public class JuryDataProvider extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = 5078264277068533593L;
-	private static final Log log = LogFactory.getLog(GridDataProvider.class);
+	private static final Log log = LogFactory.getLog(JuryDataProvider.class);
 
 	// Your result List
 	private List<JuryInfo> gridModel;
@@ -57,19 +57,25 @@ public class JuryDataProvider extends ActionSupport implements SessionAware {
 	private JuryDao juryDao = new JuryDao();
 	private StudentDao studentDao = new StudentDao();
 	List<Professors> listProfessors;
-    List<String> listProfessorNames;
+	List<String> listProfessorNames;
+
 	@SuppressWarnings("unchecked")
 	public String execute() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Professors.class);
 		criteria.setProjection(null);
 		criteria.setResultTransformer(Criteria.ROOT_ENTITY);
 		listProfessors = professorsDao.getAll();
-		List<Jury> listJuries = juryDao.getListJuryByIdSet(6);
+		
+		Object oIdSet = (Integer)this.session.get(Constants.SET);
+		
+		int idSet=(oIdSet==null?13:(Integer)oIdSet);
+		Debug.d("id set :"+idSet);
+		List<Jury> listJuries = juryDao.getListJuryByIdSet(idSet);
+		this.session.put("set", idSet);
 		List<Students> listStudents = studentDao.getAll();
 		gridModel = new LinkedList<JuryInfo>();
-		listProfessorNames=new LinkedList<String>();
-		for(Professors professors:listProfessors)
-		{
+		listProfessorNames = new LinkedList<String>();
+		for (Professors professors : listProfessors) {
 			listProfessorNames.add(professors.getName());
 		}
 		for (Jury jury : listJuries) {
@@ -91,7 +97,7 @@ public class JuryDataProvider extends ActionSupport implements SessionAware {
 					&& president != null && secretary != null
 					&& additionalMember != null) {
 
-				JuryInfo juryInfo = new JuryInfo(jury.getIdju(),
+				JuryInfo juryInfo = new JuryInfo(jury.getId(),
 						student.getName(), student.getTitle(),
 						supervisor.getName(), examiner1.getName(),
 						examiner2.getName(), president.getName(),
@@ -109,7 +115,7 @@ public class JuryDataProvider extends ActionSupport implements SessionAware {
 
 		return SUCCESS;
 	}
-    
+
 	private Professors findProfessor(int proId, List<Professors> listProfessors) {
 		for (Professors p : listProfessors) {
 			if (p.getId() == proId) {
@@ -163,9 +169,11 @@ public class JuryDataProvider extends ActionSupport implements SessionAware {
 	public List<Professors> getListProfessors() {
 		return listProfessors;
 	}
+
 	public void setListProfessorNames(List<String> listProfessorNames) {
 		this.listProfessorNames = listProfessorNames;
 	}
+
 	public List<String> getListProfessorNames() {
 		return listProfessorNames;
 	}

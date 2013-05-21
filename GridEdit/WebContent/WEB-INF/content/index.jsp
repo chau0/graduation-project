@@ -49,14 +49,25 @@
 		<div class="ym-wbox" style="padding: 5px 0 0 0;">
 			<div class="ym-grid linearize-level-1">
 				<div class="ym-g75 ym-gl">
-					<h1 class="ui-state-default" style="background: none; border: none; margin: 0;"></h1>
-					<h4 class="ui-state-default" style="background: none; border: none;"></h4>
+					<h1 class="ui-state-default" style="background: none; border: none; margin: 0;">Struts2 jQuery Plugin Showcase</h1>
+					<h4 class="ui-state-default" style="background: none; border: none;">Version <s:text name="showcase.version"/></h4>
 				</div>
-			
+				<div id="themebox" class="ym-g25 ym-gr">
+					<s:form id="themeform" action="index" theme="simple">
+						<div>
+							<s:select id="selected_theme" name="theme" list="themes" emptyOption="true" onchange="changeTheme(this.value);"/><br/>
+							<s:checkbox id="google" name="google" onclick="$.publish('themeformTopic');"/><label for="google" style="padding: 3px;">Load jQuery from Google CDN</label><br/>
+							<s:checkbox id="ajaxhistory" name="ajaxhistory" onclick="$.publish('themeformTopic');"/><label for="ajaxhistory" style="padding: 3px;">Use Ajaxhistory (BETA)</label><br/>
+							<sj:submit id="submitThemeform" formIds="themeform" listenTopics="themeformTopic" cssStyle="display: none;"/>
+						</div>
+					</s:form>
+					<img id="myDefaultIndicator" src="images/ajax-loader.gif" alt="Loading..." style="display:none"/>
+				</div>
 			</div>
 		</div>
 	</div>
 </header>
+
 
 <nav id="nav" class="ui-widget-header">
 	<div class="ym-wrapper">

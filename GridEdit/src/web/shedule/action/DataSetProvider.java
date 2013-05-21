@@ -32,15 +32,15 @@ import org.hibernate.criterion.DetachedCriteria;
 import web.shedule.dao.DataSetDao;
 import web.shedule.model.DataSet;
 import web.shedule.model.Professors;
+import web.shedule.util.Debug;
 
-import com.jgeppert.struts2.jquery.showcase.GridDataProvider;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
 public class DataSetProvider extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = 5078264277068533593L;
-	private static final Log log = LogFactory.getLog(GridDataProvider.class);
+	private static final Log log = LogFactory.getLog(DataSetProvider.class);
 
 	// Your result List
 	private List<DataSet> gridModel;
@@ -49,6 +49,7 @@ public class DataSetProvider extends ActionSupport implements SessionAware {
 	private Integer records = 0;
 
 	private DataSetDao dataSetDao = new DataSetDao();
+	private int rowsel;
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
@@ -79,6 +80,14 @@ public class DataSetProvider extends ActionSupport implements SessionAware {
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session = session;
+	}
+	public void setRowsel(int rowsel) {
+		this.rowsel = rowsel;
+		this.session.put(Constants.SET,rowsel);
+		Debug.d("row sel:"+rowsel);
+	}
+	public int getRowsel() {
+		return rowsel;
 	}
 
 }

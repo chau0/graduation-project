@@ -52,13 +52,14 @@ public class EditGridProfessor extends ActionSupport implements SessionAware {
 	private String id;
 	private String name;
 	private Map<String, Object> session;
-//	private List<Professors> listProfessors;
+
+	// private List<Professors> listProfessors;
 
 	@SuppressWarnings("unchecked")
 	public String execute() throws Exception {
-		log.debug("oper :" + oper);
-		log.debug("name :" + name);
-		log.debug("id :" + id);
+		System.out.println("oper :" + oper);
+		System.out.println("name :" + name);
+		System.out.println("id :" + id);
 		if (oper.equals("edit")) {
 			Professors professors = professorsDao.get(Integer.parseInt(id));
 			if (professors != null) {
@@ -72,18 +73,18 @@ public class EditGridProfessor extends ActionSupport implements SessionAware {
 			log.debug("Id for ne Prof is " + nextid);
 			professors.setId(nextid);
 			professors.setName(name);
-//			listProfessors.add(professors);
+			// listProfessors.add(professors);
 			professorsDao.save(professors);
 		} else if (oper.equals("del")) {
-			/*Professors professors = professorsDao.get(Integer.parseInt(id));
-			if (professors != null) {
-				listProfessors.remove(professors);
-			}*/
+			/*
+			 * Professors professors = professorsDao.get(Integer.parseInt(id));
+			 * if (professors != null) { listProfessors.remove(professors); }
+			 */
 			professorsDao.delete(Integer.parseInt(id));
 		}
-//		log.debug("edit grid prof:"+listProfessors.size());
-//		session.put("list_professors", listProfessors);
-     	hTransaction.commit();
+		// log.debug("edit grid prof:"+listProfessors.size());
+		// session.put("list_professors", listProfessors);
+		hTransaction.commit();
 		return SUCCESS;
 	}
 

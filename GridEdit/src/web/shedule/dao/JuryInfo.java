@@ -3,7 +3,7 @@ package web.shedule.dao;
 public class JuryInfo {
 	private String slotDescription;
 
-	private int idju;
+	private int id;
 	private String roomName;
 
 	private int roomId;
@@ -38,16 +38,17 @@ public class JuryInfo {
 
 	private int additionalMemberId;
 
-	private int idSet;
+	private int idDataSet;
+	
 
 	public JuryInfo() {
 	}
 
-	public JuryInfo(int idju, String name, String title, String supervisorName,
+	public JuryInfo(int id, String name, String title, String supervisorName,
 			String examinerName1, String examinerName2, String presidentName,
-			String secretaryName, String additionalmemberName, int idSet) {
+			String secretaryName, String additionalmemberName, int idDataSet) {
 
-		this.idju = idju;
+		this.id = id;
 		this.name = name;
 		this.title = title;
 		this.supervisorName = supervisorName;
@@ -56,15 +57,15 @@ public class JuryInfo {
 		this.presidentName = presidentName;
 		this.secretaryName = secretaryName;
 		this.additionalmemberName = additionalmemberName;
-		this.idSet = idSet;
+		this.idDataSet = idDataSet;
 	}
 
-	public int getIdju() {
-		return idju;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setIdju(int idju) {
-		this.idju = idju;
+	public int getId() {
+		return id;
 	}
 
 	public void setName(String name) {
@@ -225,11 +226,10 @@ public class JuryInfo {
 		return slotDescription;
 	}
 
-	public void setIdSet(int idSet) {
-		this.idSet = idSet;
+	public void setIdDataSet(int idDataSet) {
+		this.idDataSet = idDataSet;
 	}
-
-	public int getIdSet() {
-		return idSet;
+	public int getIdDataSet() {
+		return idDataSet;
 	}
 }

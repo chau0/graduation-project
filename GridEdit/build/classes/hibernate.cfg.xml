@@ -20,6 +20,8 @@
 		<mapping class="web.shedule.model.DataSet" />
 		<mapping class="web.shedule.model.Jury" />
 		<mapping class="web.shedule.model.Students" />
+		<mapping class="web.shedule.model.Slot" />
+		<mapping class="web.shedule.model.Room" />
 
 	</session-factory>
 </hibernate-configuration>

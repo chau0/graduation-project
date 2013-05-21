@@ -62,9 +62,13 @@
 				<div class="ym-grid linearize-level-1">
 					<div class="ym-g75 ym-gl">
 						<h1 class="ui-state-default"
-							style="background: none; border: none; margin: 0;"></h1>
+							style="background: none; border: none; margin: 0;">Lập lịch
+							bảo vệ cao học</h1>
 						<h4 class="ui-state-default"
-							style="background: none; border: none;"></h4>
+							style="background: none; border: none;">
+							Version 1.0.0
+							<s:text name="showcase.version" />
+						</h4>
 					</div>
 
 				</div>
@@ -76,10 +80,8 @@
 		<div class="ym-wrapper">
 			<div class="ym-hlist ui-widget-header">
 				<ul id="navlist">
-					<li><s:url var="mainurl" action="list-professors" />
-						<sj:a id="main" href="%{mainurl}" targets="main_content">Danh sach giang vien</sj:a></li>
-					<li><s:url var="dataurl" action="list-data-sets" />
-						<sj:a id="data" href="%{dataurl}" targets="main_content">Lap lich</sj:a></li>
+					<li><a href="list-professors.action">Danh sách giảng viên</a></li>
+					<li><a href="list-data-sets.action">Lập lịch</a></li>
 				</ul>
 			</div>
 		</div>
@@ -94,12 +96,13 @@
 
 			<p class="text"></p>
 			<s:url var="remoteurl" action="data-set-provider" />
-			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
-				navigator="true" navigatorAdd="true" navigatorEdit="true"
-				navigatorView="false" navigatorDelete="true"
+			<sjg:grid id="listdatasets" dataType="json" href="%{remoteurl}"
+				pager="true" navigator="true" navigatorAdd="true"
+				navigatorEdit="true" navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
 				gridModel="gridModel" rowNum="50" editurl="%{editurl}"
-				editinline="false" shrinkToFit="false" viewrecords="true">
+				editinline="false" shrinkToFit="false" viewrecords="true"
+				onSelectRowTopics="rowselect">
 
 				<sjg:gridColumn name="id" frozen="true" index="id" title="ID"
 					width="30" formatter="integer" editable="false" sortable="false"
@@ -112,11 +115,14 @@
 					formatter="date"
 					formatoptions="{newformat : 'H:i d-m-Y', srcformat : 'Y-m-d H:i:s'}" />
 			</sjg:grid>
-			<s:url var="list-prof" action="list-professors" namespace="/" />
-			<br/>
-			<sj:a id="view_data_btn" value="Xem" button="true"
-				href="%{list-prof}">Xem</sj:a>
-		    <br/>		
+
+			<br />
+			<form action="list-jury.action">
+				<input type="submit" value="Xem"
+					class="ui-button ui-widget ui-state-default ui-corner-all">
+			</form>
+			<br />
+
 		</div>
 	</div>
 

@@ -11,6 +11,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 
 import web.shedule.model.Professors;
+import web.shedule.util.Debug;
 
 public class ProfessorsDao extends
 		AbstractSimpleGenericDao<Professors, Integer> {
@@ -20,17 +21,18 @@ public class ProfessorsDao extends
 	@SuppressWarnings("unchecked")
 	public List<Professors> findByCriteria(DetachedCriteria dc, int from,
 			int size) {
-		if (log.isDebugEnabled())
-			log.debug("Return professors from " + from + " to " + size);
+		Debug.d("Return professors from " + from + " to " + size);
 
 		try {
 			Criteria criteria = dc.getExecutableCriteria(hSession);
 			criteria.setFirstResult(from);
 			criteria.setMaxResults(size);
-			return criteria.list();
+			List list=criteria.list();
+			return list;
 		} catch (HibernateException e) {
-			log.error(e.getMessage(), e);
-			throw e;
+			e.printStackTrace();
+			return null;
+			
 		}
 	}
 
@@ -62,12 +64,11 @@ public class ProfessorsDao extends
 			throw e;
 		}
 	}
-	
-	public List<String> getListProfNames()
-	{
+
+	public List<String> getListProfNames() {
 		Query query = hSession.createQuery("select name from Professors");
 		return query.list();
-		
+
 	}
 
 }

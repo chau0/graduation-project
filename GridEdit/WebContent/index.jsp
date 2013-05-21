@@ -1,1 +1,1 @@
-<% response.sendRedirect("list-jury.action"); %>
+<% response.sendRedirect("list-professors.action"); %>

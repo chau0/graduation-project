@@ -45,7 +45,7 @@ public class StudentDao extends AbstractSimpleGenericDao<Students, Integer> {
 		}
 	}
 
-	public int nextProfessors() {
+	public int getNextId() {
 		if (log.isDebugEnabled())
 			log.debug("find next customer number");
 

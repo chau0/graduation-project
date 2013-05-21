@@ -32,14 +32,13 @@ import org.hibernate.criterion.DetachedCriteria;
 import web.shedule.dao.StudentDao;
 import web.shedule.model.Students;
 
-import com.jgeppert.struts2.jquery.showcase.GridDataProvider;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
 public class StudentDataProvider extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = 5078264277068533593L;
-	private static final Log log = LogFactory.getLog(GridDataProvider.class);
+	private static final Log log = LogFactory.getLog(StudentDataProvider.class);
 
 	// Your result List
 	private List<Students> gridModel;

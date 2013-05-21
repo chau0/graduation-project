@@ -9,48 +9,48 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "jury")
 public class Jury {
-	
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private int idju;
-	
+
+	@Id()
+	@Column(name = "id", unique = true)
+	private int id;
 	@Column(name = "set_id")
 	private int idset;
-	
+
 	@Column(name = "student_id")
 	private int idsv;
-	
+
 	@Column(name = "supervisor")
 	private int supervisor;
 
 	@Column(name = "examiner1")
 	private int examiner1;
-	
+
 	@Column(name = "examiner2")
 	private int examiner2;
-	
+
 	@Column(name = "president")
 	private int president;
-	
+
 	@Column(name = "secretary")
 	private int secretary;
-	
+
 	@Column(name = "additionalmember")
 	private int additionalmember;
-	
+
 	@Column(name = "slots")
 	private int slots;
-	
+
 	@Column(name = "rooms")
 	private int rooms;
-	
-	public Jury(){}
 
-	public Jury(int idju, int idset, int idsv, int supervisor,
-			int examiner1, int examiner2, int president, int secretary,
-			int additionalmember, int slots, int rooms) {
-		this.idju = idju;
+	public Jury() {
+	}
+
+	public Jury(int id, int idset, int idsv, int supervisor, int examiner1,
+			int examiner2, int president, int secretary, int additionalmember,
+			int slots, int rooms) {
+		super();
+		this.id = id;
 		this.idset = idset;
 		this.idsv = idsv;
 		this.supervisor = supervisor;
@@ -63,12 +63,12 @@ public class Jury {
 		this.rooms = rooms;
 	}
 
-	public int getIdju() {
-		return idju;
+	public int getId() {
+		return id;
 	}
 
-	public void setIdju(int idju) {
-		this.idju = idju;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getIdset() {
@@ -86,7 +86,6 @@ public class Jury {
 	public void setIdsv(int idsv) {
 		this.idsv = idsv;
 	}
-
 
 	public int getSupervisor() {
 		return supervisor;
@@ -151,7 +150,6 @@ public class Jury {
 	public void setRooms(int rooms) {
 		this.rooms = rooms;
 	}
-	
 	
 
 }
