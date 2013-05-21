@@ -96,24 +96,27 @@
 
 			<p class="text"></p>
 			<s:url var="remoteurl" action="data-set-provider" />
+			<s:url var="editurl" action="edit-grid-data-set" />
 			<sjg:grid id="listdatasets" dataType="json" href="%{remoteurl}"
 				pager="true" navigator="true" navigatorAdd="true"
 				navigatorEdit="true" navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
 				gridModel="gridModel" rowNum="50" editurl="%{editurl}"
 				editinline="false" shrinkToFit="false" viewrecords="true"
-				onSelectRowTopics="rowselect">
+				onSelectRowTopics="rowselect" rownumbers="true">
 
-				<sjg:gridColumn name="id" frozen="true" index="id" title="ID"
-					width="30" formatter="integer" editable="false" sortable="false"
-					search="true" />
 
-				<sjg:gridColumn name="title" index="title" title="Title" width="450"
+
+
+				<sjg:gridColumn name="title" index="title" title="Title" width="550"
 					editable="true" edittype="text" sortable="true" search="false" />
-				<sjg:gridColumn name="date" index="date" title="Date" width="300"
-					editable="true" edittype="text" sortable="true" search="false"
+				<sjg:gridColumn name="id" frozen="true" index="id" title="Data Id"
+					width="50" formatter="integer" editable="false" sortable="false"
+					search="true" />
+				<%-- <sjg:gridColumn name="date" index="date" title="Date" width="300"
+					editable="false" edittype="text" sortable="true" search="false"
 					formatter="date"
-					formatoptions="{newformat : 'H:i d-m-Y', srcformat : 'Y-m-d H:i:s'}" />
+					formatoptions="{newformat : 'H:i d-m-Y', srcformat : 'Y-m-d H:i:s'}" /> --%>
 			</sjg:grid>
 
 			<br />

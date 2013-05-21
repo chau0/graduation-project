@@ -83,8 +83,8 @@
 		<div class="ym-wrapper">
 			<div class="ym-hlist ui-widget-header">
 				<ul id="navlist">
-					<li><a href="list-professors.action">Danh sach giang vien</a></li>
-					<li><a href="list-data-sets.action">Lap lich</a></li>
+					<li><a href="list-professors.action">Danh sách giảng viên</a></li>
+					<li><a href="list-data-sets.action">Lập lịch</a></li>
 				</ul>
 			</div>
 		</div>
@@ -101,13 +101,17 @@
 				navigator="true" navigatorAdd="false" navigatorEdit="true"
 				navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
-				gridModel="gridModel" rowNum="20" editurl="%{editjuryurl}"
+				gridModel="gridModel" rowNum="100" editurl="%{editjuryurl}"
 				editinline="false" shrinkToFit="false" viewrecords="true"
-				width="1000" rownumbers="true">
-				<sjg:gridColumn name="slotDescription" index="slotDescription" title="Slot" width="70"
-					editable="true" edittype="text" sortable="true" search="false" />
-				<sjg:gridColumn name="roomName" index="roomName" title="Room" width="100"
-					editable="true" edittype="text" sortable="true" search="false" />
+				width="1000" rownumbers="true"
+				caption="Lịch bảo vệ"
+				>
+				<sjg:gridColumn name="slotDescription" index="slotDescription"
+					title="Slot" width="70" editable="true" edittype="text"
+					sortable="true" search="false" />
+				<sjg:gridColumn name="roomName" index="roomName" title="Room"
+					width="100" editable="true" edittype="text" sortable="true"
+					search="false" />
 				<sjg:gridColumn name="name" index="name" title="Name" width="150"
 					editable="true" edittype="text" sortable="true" search="false" />
 
@@ -138,7 +142,7 @@
 			</sjg:grid>
 
 			<br>
-			<form action="list-data-sets.action">
+			<form action="list-jury.action">
 				<input type="submit" value="Tro lai"
 					class="ui-button ui-widget ui-state-default ui-corner-all">
 			</form>

@@ -101,6 +101,7 @@
 			dataType="json" 
 			href="%{remoteurl}" 
 			pager="true"
+			
 				navigator="true" 
 				navigatorAdd="true"
 				navigatorAddOptions="{reloadAfterSubmit:true}" 

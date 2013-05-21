@@ -82,8 +82,8 @@
 		<div class="ym-wrapper">
 			<div class="ym-hlist ui-widget-header">
 				<ul id="navlist">
-					<li><a href="list-professors.action">Danh sach giang vien</a></li>
-					<li><a href="list-data-sets.action">Lap lich</a></li>
+					<li><a href="list-professors.action">Danh sách giảng viên</a></li>
+					<li><a href="list-data-sets.action">Lập lịch</a></li>
 				</ul>
 			</div>
 		</div>
@@ -97,17 +97,18 @@
 			<s:url var="editjuryurl" action="edit-jury" />
 			<s:url var="selectprofurl" action="professor-names" />
 			<s:url var="remoteurl" action="jury-data-provider" />
-			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
+			<sjg:grid
+			    caption="Hội đồng" 
+			    dataType="json" href="%{remoteurl}" pager="true"
 				navigator="true" navigatorAdd="true" navigatorEdit="true"
 				navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
-				gridModel="gridModel" rowNum="20" editurl="%{editjuryurl}"
-				editinline="false" shrinkToFit="false" viewrecords="true"
-				width="1000" rownumbers="true">
-				<sjg:gridColumn name="id" frozen="true" index="id" title="Jury id"
-					width="30" formatter="integer" editable="false" sortable="false"
-					search="true" />
-
+				gridModel="gridModel" rowNum="100" editurl="%{editjuryurl}"
+				editinline="false" 
+				shrinkToFit="false" 
+				viewrecords="true"
+				width="1000" 
+				rownumbers="true">
 				<sjg:gridColumn name="name" index="name" title="Name" width="150"
 					editable="true" edittype="text" sortable="true" search="false" />
 
