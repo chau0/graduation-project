@@ -10,7 +10,7 @@ import web.shedule.model.Slot;
 import web.shedule.util.Debug;
 
 
-public class NewSearch {
+public class Sheduler {
 	/**
 	 * @param args
 	 */
@@ -25,7 +25,7 @@ public class NewSearch {
 	private List<JuryInfo> listJuryInfos;
 	private List<Professors> listProfessors;
 
-	public NewSearch(List<JuryInfo> listJuryInfos,
+	public Sheduler(List<JuryInfo> listJuryInfos,
 			List<Professors> listProfessors, List<Slot> slots) {
 		this.listProfessors = listProfessors;
 		this.slots = slots;

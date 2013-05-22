@@ -30,7 +30,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 
-import web.shedule.algorithm.NewSearch;
+import web.shedule.algorithm.Sheduler;
 import web.shedule.dao.JuryDao;
 import web.shedule.dao.JuryInfo;
 import web.shedule.dao.ProfessorsDao;
@@ -61,8 +61,8 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 	private ProfessorsDao professorsDao = new ProfessorsDao();
 	private JuryDao juryDao = new JuryDao();
 	private StudentDao studentDao = new StudentDao();
-	private SlotDao slotDao=new SlotDao();
-	private RoomDao roomDao=new RoomDao();
+	private SlotDao slotDao = new SlotDao();
+	private RoomDao roomDao = new RoomDao();
 	List<Professors> listProfessors;
 	List<String> listProfessorNames;
 
@@ -119,7 +119,7 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 				gridModel.add(juryInfo);
 			}
 		}
-		NewSearch search = new NewSearch(gridModel, listProfessors,
+		Sheduler search = new Sheduler(gridModel, listProfessors,
 				slotDao.getAll());
 		search.localsearch(1000);
 		List<Room> listRooms = roomDao.getAll();
@@ -149,14 +149,16 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 		}
 		return null;
 	}
+
 	private Slot findSlot(int slotId, List<Slot> listSlots) {
-		for (Slot s:listSlots) {
+		for (Slot s : listSlots) {
 			if (s.getId() == slotId) {
 				return s;
 			}
 		}
 		return null;
 	}
+
 	private Room findRoom(int roomid, List<Room> listRooms) {
 		Debug.d("find room :" + roomid);
 		for (Room r : listRooms) {
