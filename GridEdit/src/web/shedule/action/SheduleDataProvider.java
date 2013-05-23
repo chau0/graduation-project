@@ -160,7 +160,7 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 	}
 
 	private Room findRoom(int roomid, List<Room> listRooms) {
-		Debug.d("find room :" + roomid);
+//		Debug.d("find room :" + roomid);
 		for (Room r : listRooms) {
 			if (r.getId() == roomid) {
 				return r;
