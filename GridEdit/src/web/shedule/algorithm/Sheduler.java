@@ -9,7 +9,6 @@ import web.shedule.model.Professors;
 import web.shedule.model.Slot;
 import web.shedule.util.Debug;
 
-
 public class Sheduler {
 	/**
 	 * @param args
@@ -105,7 +104,7 @@ public class Sheduler {
 			var_slots[i].setValue(minSlot);
 		}
 
-//		System.out.println("violations = " + CS.violations());
+		// System.out.println("violations = " + CS.violations());
 
 		int[][] tabu = new int[nbStudents][maxSlot + 1];
 
@@ -128,7 +127,9 @@ public class Sheduler {
 			for (int i = 0; i < nbStudents; i++) {
 				for (int sl = minSlot; sl <= maxSlot; sl++) {
 					int d = CS.getAssignDelta(var_slots[i], sl);
-					if (CS.violations() + d < bestV || tabu[i][sl] < it) {
+					boolean isTabuOk = tabu[i][sl] < it;
+					boolean isOptimizer = CS.violations() + d < bestV;
+					if (isOptimizer || isTabuOk) {
 						if (d < minDelta) {
 							minDelta = d;
 							sel_i = i;
@@ -138,7 +139,7 @@ public class Sheduler {
 				}
 			}
 
-//			System.out.println("sel_i = " + sel_i + " sel_sl = " + sel_sl);
+			// System.out.println("sel_i = " + sel_i + " sel_sl = " + sel_sl);
 
 			CS.propagate(var_slots[sel_i], sel_sl);
 			var_slots[sel_i].setValue(sel_sl);
@@ -158,14 +159,15 @@ public class Sheduler {
 			if (CS.violations() < bestV) {
 				bestV = CS.violations();
 			}
-//			System.out.println("Step " + it + " : Assign var_slots[" + sel_i
-//					+ "] to " + sel_sl + " violations = " + CS.violations()
-//					+ " best = " + bestV);
+			// System.out.println("Step " + it + " : Assign var_slots[" + sel_i
+			// + "] to " + sel_sl + " violations = " + CS.violations()
+			// + " best = " + bestV);
 			it++;
 		}
 
-//		System.out.println("NewSearch::assignSlot, AtMost = " + am.violations()
-//				+ " CS = " + CS.violations());
+		// System.out.println("NewSearch::assignSlot, AtMost = " +
+		// am.violations()
+		// + " CS = " + CS.violations());
 	}
 
 	private void assignContinuousSlot(ConstraintSystem csNotEqual, int maxIter) {
@@ -213,9 +215,9 @@ public class Sheduler {
 				}
 			}
 			int d = csNotEqual.getAssignDelta(var_slots[sel_i], sel_sl);
-//			System.out.println("AtMost::getAssignDelta(x[" + sel_i + "],"
-//					+ sel_sl + ") = " + d);
-//			System.out.println("sel_i = " + sel_i + " sel_sl = " + sel_sl);
+			// System.out.println("AtMost::getAssignDelta(x[" + sel_i + "],"
+			// + sel_sl + ") = " + d);
+			// System.out.println("sel_i = " + sel_i + " sel_sl = " + sel_sl);
 			csContinuous.propagate(var_slots[sel_i], sel_sl);
 			csNotEqual.propagate(var_slots[sel_i], sel_sl);
 			var_slots[sel_i].setValue(sel_sl);
@@ -241,9 +243,9 @@ public class Sheduler {
 			if (csContinuous.violations() < bestV) {
 				bestV = csContinuous.violations();
 			}
-//			System.out.println("Step " + it + " : Assign var_slots[" + sel_i
-//					+ "] to " + sel_sl + " violations = "
-//					+ csContinuous.violations() + " best = " + bestV);
+			// System.out.println("Step " + it + " : Assign var_slots[" + sel_i
+			// + "] to " + sel_sl + " violations = "
+			// + csContinuous.violations() + " best = " + bestV);
 			if (it == 999) {
 				continuous.printResult();
 			}

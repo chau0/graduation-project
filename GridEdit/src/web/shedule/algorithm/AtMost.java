@@ -50,8 +50,8 @@ public class AtMost implements IConstraint {
 	@Override
 	public void propagate(VarInt x, int val) {
 		// TODO Auto-generated method stub
-//		System.out.println("AtMost::propagate(x[" + x.getID() + "] = "
-//				+ x.getValue() + "," + val + ")");
+		// System.out.println("AtMost::propagate(x[" + x.getID() + "] = "
+		// + x.getValue() + "," + val + ")");
 		int oldV = x.getValue();
 		if (oldV == val)
 			return;
@@ -67,13 +67,13 @@ public class AtMost implements IConstraint {
 	public void initPropagate() {
 		// TODO Auto-generated method stub
 		_violations = 0;
-//		System.out.println("AtMmost::initPropagate, _min = " + _min
-//				+ " _max = " + _max + " _szOcc = " + _szOcc);
+		// System.out.println("AtMmost::initPropagate, _min = " + _min
+		// + " _max = " + _max + " _szOcc = " + _szOcc);
 		for (int i = 0; i < _szOcc; i++)
 			_occ[i] = 0;
 		for (int i = 0; i < _x.length; i++) {
 			int v = _x[i].getValue();
-//			System.out.println("AtMmost::initPropagate, v = " + v);
+			// System.out.println("AtMmost::initPropagate, v = " + v);
 			_occ[v - _min]++;
 		}
 		for (int i = 0; i < _szOcc; i++)
@@ -83,7 +83,7 @@ public class AtMost implements IConstraint {
 
 	@Override
 	public boolean verify() {
-//		System.out.println("AtMost::verify");
+		// System.out.println("AtMost::verify");
 		// TODO Auto-generated method stub
 		int[] occ = new int[_szOcc];
 		for (int i = 0; i < _szOcc; i++)
@@ -95,40 +95,40 @@ public class AtMost implements IConstraint {
 		int vio = 0;
 		for (int i = 0; i < _szOcc; i++) {
 			if (occ[i] != _occ[i]) {
-//				System.out.println("AtMost::verify --> failed, _occ[" + i
-//						+ "] = " + _occ[i] + " while recomputing occ = "
-//						+ occ[i]);
+				// System.out.println("AtMost::verify --> failed, _occ[" + i
+				// + "] = " + _occ[i] + " while recomputing occ = "
+				// + occ[i]);
 				return false;
 			}
 			if (occ[i] > _ub)
 				vio += occ[i] - _ub;
 		}
 		if (vio != _violations) {
-//			System.out.println("AtMost::verify --> failed, _violations = "
-//					+ _violations + " while recomputing vio = " + vio);
+			// System.out.println("AtMost::verify --> failed, _violations = "
+			// + _violations + " while recomputing vio = " + vio);
 			return false;
 		}
 		return true;
 	}
 
 	public void print() {
-//		int[] occ = new int[_szOcc];
-//		for (int i = 0; i < _szOcc; i++)
-//			occ[i] = 0;
-//		for (int i = 0; i < _x.length; i++) {
-//			int v = _x[i].getValue();
-//			occ[v - _min]++;
-//		}
+		// int[] occ = new int[_szOcc];
+		// for (int i = 0; i < _szOcc; i++)
+		// occ[i] = 0;
+		// for (int i = 0; i < _x.length; i++) {
+		// int v = _x[i].getValue();
+		// occ[v - _min]++;
+		// }
 
-//		for (int i = 0; i < _x.length; i++)
-//			System.out.println("AtMost::print _x[" + i + "] = "
-//					+ _x[i].getValue());
-//		for (int v = 0; v < _szOcc; v++) {
-//			int vv = v + _min;
-//			System.out.println("AtMost::print _occ[" + vv + "] = " + _occ[v]
-//					+ " = occ[" + vv + "] = " + occ[v]);
-//		}
-//		System.out.println("AtMost::print, violations = " + violations());
+		// for (int i = 0; i < _x.length; i++)
+		// System.out.println("AtMost::print _x[" + i + "] = "
+		// + _x[i].getValue());
+		// for (int v = 0; v < _szOcc; v++) {
+		// int vv = v + _min;
+		// System.out.println("AtMost::print _occ[" + vv + "] = " + _occ[v]
+		// + " = occ[" + vv + "] = " + occ[v]);
+		// }
+		// System.out.println("AtMost::print, violations = " + violations());
 	}
 
 	/**
