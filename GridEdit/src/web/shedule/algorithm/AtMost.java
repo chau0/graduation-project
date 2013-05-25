@@ -11,7 +11,6 @@ public class AtMost implements IConstraint {
 	private int _max;
 
 	public AtMost(VarInt[] x, int ub) {
-		_x = x;
 		_ub = ub;
 		_min = 100000;
 		_max = -100000;
