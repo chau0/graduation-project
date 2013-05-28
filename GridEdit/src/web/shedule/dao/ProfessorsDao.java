@@ -27,12 +27,12 @@ public class ProfessorsDao extends
 			Criteria criteria = dc.getExecutableCriteria(hSession);
 			criteria.setFirstResult(from);
 			criteria.setMaxResults(size);
-			List list = criteria.list();
+			List list=criteria.list();
 			return list;
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			return null;
-
+			
 		}
 	}
 
