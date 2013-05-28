@@ -2,13 +2,11 @@ package web.shedule.algorithm;
 
 import java.util.List;
 
-import org.hibernate.transaction.JRun4TransactionManagerLookup;
 
 import web.shedule.dao.JuryInfo;
 import web.shedule.model.Professors;
-import web.shedule.model.Slot;
+import web.shedule.model.Room;
 import web.shedule.util.Debug;
-
 
 public class NewSearch {
 	/**
@@ -21,18 +19,21 @@ public class NewSearch {
 	boolean[][] conflict;
 	int minSlot;
 	int maxSlot;
-	List<Slot> slots;
 	private List<JuryInfo> listJuryInfos;
 	private List<Professors> listProfessors;
+	private int nbSlots;
+	private int nbRooms;
 
 	public NewSearch(List<JuryInfo> listJuryInfos,
-			List<Professors> listProfessors, List<Slot> slots) {
+			List<Professors> listProfessors, int nbSlots, int nbRooms) {
+		this.nbRooms = nbRooms;
+		this.nbSlots = nbSlots;
 		this.listProfessors = listProfessors;
-		this.slots = slots;
 		this.listJuryInfos = listJuryInfos;
 		nbStudents = listJuryInfos.size();
 		var_slots = new VarInt[nbStudents];
 		conflict = new boolean[nbStudents][nbStudents];
+		int[] slots = new int[nbSlots];
 
 		for (int i = 0; i < nbStudents; i++) {
 			for (int j = 0; j < nbStudents; j++) {
@@ -48,14 +49,15 @@ public class NewSearch {
 
 		minSlot = 10000;
 		maxSlot = -1;
-
-		for (int i = 0; i < slots.size(); i++) {
-			Slot sl = slots.get(i);
-			if (minSlot > sl.getId()) {
-				minSlot = sl.getId();
+		for (int i = 0; i < nbSlots; i++) {
+			slots[i] = i;
+		}
+		for (int i = 0; i < nbSlots; i++) {
+			if (minSlot > slots[i]) {
+				minSlot = slots[i];
 			}
-			if (maxSlot < sl.getId()) {
-				maxSlot = sl.getId();
+			if (maxSlot < slots[i]) {
+				maxSlot = slots[i];
 			}
 		}
 
@@ -97,7 +99,7 @@ public class NewSearch {
 				}
 			}
 		}
-		AtMost am = new AtMost(var_slots, 6);
+		AtMost am = new AtMost(var_slots,nbRooms);
 		CS.post(am);
 		CS.close();
 
@@ -262,10 +264,9 @@ public class NewSearch {
 			JuryInfo info = listJuryInfos.get(i);
 			int slotId = var_slots[i].getValue();
 			info.setSlotId(slotId);
-			info.setSlotDescription(slots.get(slotId - 1).getDes());
 		}
 
 		AssignRooms ar = new AssignRooms();
-		ar.assignRooms(listJuryInfos, 6);
+		ar.assignRooms(listJuryInfos, nbRooms);
 	}
 }

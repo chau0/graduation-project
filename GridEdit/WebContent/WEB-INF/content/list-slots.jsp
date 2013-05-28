@@ -55,16 +55,19 @@
 	src="<s:url value="/js/extendplugin.js" />"></script>
 </head>
 <body>
-
 	<header class="ui-widget-header">
 		<div class="ym-wrapper">
 			<div class="ym-wbox" style="padding: 5px 0 0 0;">
 				<div class="ym-grid linearize-level-1">
 					<div class="ym-g75 ym-gl">
 						<h1 class="ui-state-default"
-							style="background: none; border: none; margin: 0;"></h1>
+							style="background: none; border: none; margin: 0;">Lập lịch
+							bảo vệ cao học</h1>
 						<h4 class="ui-state-default"
-							style="background: none; border: none;"></h4>
+							style="background: none; border: none;">
+							Version 1.0.0
+							<s:text name="showcase.version" />
+						</h4>
 					</div>
 
 				</div>
@@ -91,42 +94,48 @@
 			<%@ taglib prefix="s" uri="/struts-tags"%>
 			<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 			<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
-			<h2>Danh sách bộ dữ liệu</h2>
+			<h2>Danh sách kíp bảo vệ</h2>
 
 			<p class="text"></p>
-			<s:url var="remoteurl" action="student-data-provider" />
-			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
-				navigator="true" navigatorAdd="true" navigatorEdit="true"
-				navigatorView="false" navigatorDelete="true"
-				navigatorRefresh="false" navigatorSearch="false"
-				gridModel="gridModel" rowNum="50" editurl="%{editurl}"
-				editinline="false" shrinkToFit="false" viewrecords="true">
-
+			<s:url var="remoteurl" action="slot-data-provider" />
+			<s:url var="editurl" action="edit-grid-slot" />
+			<sjg:grid 
+			dataType="json" 
+			href="%{remoteurl}" 
+			pager="true"
+				navigator="true" 
+				navigatorAdd="true"
+				navigatorAddOptions="{reloadAfterSubmit:true}" 
+				navigatorEdit="true"
+				navigatorView="false"
+			    navigatorDelete="true"
+				navigatorRefresh="false" 
+				navigatorSearch="false"
+				gridModel="gridModel" 
+				rowNum="20" 
+				editurl="%{editurl}"
+				editinline="false" 
+				shrinkToFit="false" 
+				viewrecords="true">
 				<sjg:gridColumn name="id" frozen="true" index="id" title="ID"
 					width="30" formatter="integer" editable="false" sortable="false"
 					search="true" />
-				<sjg:gridColumn name="name" index="name" title="Name" width="450"
-					editable="true" edittype="text" sortable="true" search="false" />
-				<sjg:gridColumn name="title" index="title" title="Title" width="450"
+				<sjg:gridColumn name="des" index="des" title="Thời gian" width="550"
 					editable="true" edittype="text" sortable="true" search="false" />
 
 			</sjg:grid>
-			<s:url var="list-prof" action="list-professors" namespace="/" />
-			<br />
-			<sj:a id="view_data_btn" value="Xem" button="true"
-				href="%{list-prof}">Xem</sj:a>
-			<br />
+
 		</div>
 	</div>
 
 	<footer>
 		<div class="ym-wrapper">
 			<div class="ym-wbox">
-				<p style="text-align: center;">
+<!-- 				<p style="text-align: center;"> -->
 
-					Layout based on <a href="http://www.yaml.de/"
-						title="OpenSource CSS Layout">YAML</a>
-				</p>
+<!-- 					Layout based on <a href="http://www.yaml.de/" -->
+<!-- 						title="OpenSource CSS Layout">YAML</a> -->
+<!-- 				</p> -->
 			</div>
 		</div>
 	</footer>

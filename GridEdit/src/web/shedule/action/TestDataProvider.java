@@ -19,6 +19,7 @@
 
 package web.shedule.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,40 +30,30 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 
-import web.shedule.dao.ProfessorsDao;
-import web.shedule.model.Professors;
+import web.shedule.dao.SlotDao;
+import web.shedule.model.Slot;
 import web.shedule.util.Debug;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
-public class ProfessorDataProvider extends ActionSupport implements
-		SessionAware {
+public class TestDataProvider extends ActionSupport implements SessionAware {
 
 	private static final long serialVersionUID = 5078264277068533593L;
-	private static final Log log = LogFactory
-			.getLog(ProfessorDataProvider.class);
-
-	// Your result List
-	private List<Professors> gridModel;
+	private static final Log log = LogFactory.getLog(TestDataProvider.class);
+	private List<Slot> gridModel;
 	private Map<String, Object> session;
-	// All Records
 	private Integer records = 0;
-	// get how many rows we want to have into the grid - rowNum attribute in the
-	// grid
 	private Integer rows = 0;
-
-	// Get the requested page. By default grid sets this to 1.
 	private Integer page = 0;
-
-	// Your Total Pages
 	private Integer total = 0;
-
-	// All Records
-	private ProfessorsDao professorsDao = new ProfessorsDao();
+	private SlotDao slotDao = new SlotDao();
+	private List<String> listString;
+	private List<Slot> listSlots;
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
+		listSlots = slotDao.getAll();
 		Debug.d("Page " + getPage() + " Rows " + getRows());
 		// Calcalate until rows ware selected
 		int to = (rows * page);
@@ -71,12 +62,12 @@ public class ProfessorDataProvider extends ActionSupport implements
 		int from = to - rows;
 
 		// Criteria to Build SQL
-		DetachedCriteria criteria = DetachedCriteria.forClass(Professors.class);
-		records = professorsDao.countByCriteria(criteria);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Slot.class);
+		records = slotDao.countByCriteria(criteria);
 		criteria.setProjection(null);
 		criteria.setResultTransformer(Criteria.ROOT_ENTITY);
 
-		gridModel = professorsDao.findByCriteria(criteria, from, to);
+		gridModel = slotDao.findByCriteria(criteria, from, to);
 		// Set to = max rows
 		if (to > records)
 			to = records;
@@ -84,7 +75,7 @@ public class ProfessorDataProvider extends ActionSupport implements
 		Debug.d("grid mode size:" + gridModel.size());
 		// Calculate total Pages
 		total = (int) Math.ceil((double) records / (double) rows);
-
+		addToList();
 		return SUCCESS;
 	}
 
@@ -96,11 +87,11 @@ public class ProfessorDataProvider extends ActionSupport implements
 		return records;
 	}
 
-	public List<Professors> getGridModel() {
+	public List<Slot> getGridModel() {
 		return gridModel;
 	}
 
-	public void setGridModel(List<Professors> gridModel) {
+	public void setGridModel(List<Slot> gridModel) {
 		this.gridModel = gridModel;
 	}
 
@@ -169,4 +160,32 @@ public class ProfessorDataProvider extends ActionSupport implements
 		}
 	}
 
+	public void setListString(List<String> listString) {
+		this.listString = listString;
+	}
+
+	public List<String> getListString() {
+		return listString;
+	}
+
+	private void addToList() {
+		
+		System.out.println("excute iterator kfc");
+		listString = new ArrayList<String>();
+		listString.add("Snack Plate");
+		listString.add("Dinner Plate");
+		listString.add("Colonel Chicken Rice Combo");
+		listString.add("Colonel Burger");
+		listString.add("O.R. Fillet Burger");
+		listString.add("Zinger Burger");
+		Debug.d(listString.toString());
+	}
+
+	public List<Slot> getListSlots() {
+		return listSlots;
+	}
+
+	public void setListSlots(List<Slot> listSlots) {
+		this.listSlots = listSlots;
+	}
 }

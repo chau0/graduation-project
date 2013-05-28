@@ -10,6 +10,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 
 import web.shedule.model.Jury;
+import web.shedule.model.Professors;
 import web.shedule.model.Room;
 
 public class RoomDao extends AbstractSimpleGenericDao<Room, Integer> {
@@ -17,7 +18,7 @@ public class RoomDao extends AbstractSimpleGenericDao<Room, Integer> {
 	private static final Log log = LogFactory.getLog(RoomDao.class);
 
 	@SuppressWarnings("unchecked")
-	public List<Jury> findByCriteria(DetachedCriteria dc, int from, int size) {
+	public List<Room> findByCriteria(DetachedCriteria dc, int from, int size) {
 		if (log.isDebugEnabled())
 			log.debug("Return professors from " + from + " to " + size);
 
@@ -66,5 +67,22 @@ public class RoomDao extends AbstractSimpleGenericDao<Room, Integer> {
 			return 1;
 		}
 	}
+	
+
+	public int nextRoom() {
+		if (log.isDebugEnabled())
+			log.debug("find next customer number");
+
+		try {
+			DetachedCriteria dc = DetachedCriteria.forClass(Room.class);
+			Criteria criteria = dc.getExecutableCriteria(hSession);
+			criteria.setProjection(Projections.max("id"));
+			return ((Integer) criteria.list().get(0)).intValue() + 1;
+		} catch (HibernateException e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
 
 }

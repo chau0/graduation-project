@@ -8,6 +8,10 @@ import web.shedule.dao.ProfessorsDao;
 import web.shedule.model.Professors;
 
 public class ProfessorNamesAction extends ActionSupport {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4330429721980090828L;
 	private List<Professors> profs;
 	private ProfessorsDao professorsDao = new ProfessorsDao();
 

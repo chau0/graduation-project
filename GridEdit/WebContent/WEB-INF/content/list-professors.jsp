@@ -76,17 +76,20 @@
 	</header>
 
 
+	
 	<nav id="nav" class="ui-widget-header">
 		<div class="ym-wrapper">
 			<div class="ym-hlist ui-widget-header">
 				<ul id="navlist">
-					<li><a href="list-professors.action">Danh sách giảng viên</a></li>
+					<li><a href="list-professors.action">Giảng viên</a></li>
+					<li><a href="list-slots.action">Kíp</a></li>
+					<li><a href="list-rooms.action">Phòng</a></li>
 					<li><a href="list-data-sets.action">Lập lịch</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
+	
 	<div id="main">
 		<div class="ym-wrapper">
 			<%@ taglib prefix="s" uri="/struts-tags"%>

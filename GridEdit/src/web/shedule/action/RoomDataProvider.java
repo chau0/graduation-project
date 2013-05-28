@@ -29,22 +29,22 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 
-import web.shedule.dao.ProfessorsDao;
-import web.shedule.model.Professors;
+import web.shedule.dao.RoomDao;
+import web.shedule.model.Room;
 import web.shedule.util.Debug;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
-public class ProfessorDataProvider extends ActionSupport implements
+public class RoomDataProvider extends ActionSupport implements
 		SessionAware {
 
 	private static final long serialVersionUID = 5078264277068533593L;
 	private static final Log log = LogFactory
-			.getLog(ProfessorDataProvider.class);
+			.getLog(RoomDataProvider.class);
 
 	// Your result List
-	private List<Professors> gridModel;
+	private List<Room> gridModel;
 	private Map<String, Object> session;
 	// All Records
 	private Integer records = 0;
@@ -59,7 +59,7 @@ public class ProfessorDataProvider extends ActionSupport implements
 	private Integer total = 0;
 
 	// All Records
-	private ProfessorsDao professorsDao = new ProfessorsDao();
+	private RoomDao roomDao=new RoomDao();
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
@@ -71,12 +71,12 @@ public class ProfessorDataProvider extends ActionSupport implements
 		int from = to - rows;
 
 		// Criteria to Build SQL
-		DetachedCriteria criteria = DetachedCriteria.forClass(Professors.class);
-		records = professorsDao.countByCriteria(criteria);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Room.class);
+		records = roomDao.countByCriteria(criteria);
 		criteria.setProjection(null);
 		criteria.setResultTransformer(Criteria.ROOT_ENTITY);
 
-		gridModel = professorsDao.findByCriteria(criteria, from, to);
+		gridModel = roomDao.findByCriteria(criteria, from, to);
 		// Set to = max rows
 		if (to > records)
 			to = records;
@@ -96,11 +96,11 @@ public class ProfessorDataProvider extends ActionSupport implements
 		return records;
 	}
 
-	public List<Professors> getGridModel() {
+	public List<Room> getGridModel() {
 		return gridModel;
 	}
 
-	public void setGridModel(List<Professors> gridModel) {
+	public void setGridModel(List<Room> gridModel) {
 		this.gridModel = gridModel;
 	}
 

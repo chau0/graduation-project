@@ -61,8 +61,8 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 	private ProfessorsDao professorsDao = new ProfessorsDao();
 	private JuryDao juryDao = new JuryDao();
 	private StudentDao studentDao = new StudentDao();
-	private SlotDao slotDao=new SlotDao();
-	private RoomDao roomDao=new RoomDao();
+	private SlotDao slotDao = new SlotDao();
+	private RoomDao roomDao = new RoomDao();
 	List<Professors> listProfessors;
 	List<String> listProfessorNames;
 
@@ -119,14 +119,17 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 				gridModel.add(juryInfo);
 			}
 		}
-		NewSearch search = new NewSearch(gridModel, listProfessors,
-				slotDao.getAll());
-		search.localsearch(1000);
 		List<Room> listRooms = roomDao.getAll();
+		List<Slot> listSlots = slotDao.getAll();
+		NewSearch search = new NewSearch(gridModel, listProfessors,
+				listSlots.size(), listRooms.size());
+		search.localsearch(1000);
 
 		for (JuryInfo juryInfo : gridModel) {
-			Room room = findRoom(juryInfo.getRoomId() + 1, listRooms);
+			Room room = listRooms.get(juryInfo.getRoomId());
+			Slot slot = listSlots.get(juryInfo.getSlotId());
 			juryInfo.setRoomName(room.getName());
+			juryInfo.setSlotDescription(slot.getDes());
 		}
 
 		return SUCCESS;
@@ -149,14 +152,16 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 		}
 		return null;
 	}
+
 	private Slot findSlot(int slotId, List<Slot> listSlots) {
-		for (Slot s:listSlots) {
+		for (Slot s : listSlots) {
 			if (s.getId() == slotId) {
 				return s;
 			}
 		}
 		return null;
 	}
+
 	private Room findRoom(int roomid, List<Room> listRooms) {
 		Debug.d("find room :" + roomid);
 		for (Room r : listRooms) {

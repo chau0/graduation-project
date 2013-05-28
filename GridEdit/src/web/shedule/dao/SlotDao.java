@@ -17,7 +17,7 @@ public class SlotDao extends AbstractSimpleGenericDao<Slot, Integer> {
 	private static final Log log = LogFactory.getLog(SlotDao.class);
 
 	@SuppressWarnings("unchecked")
-	public List<Jury> findByCriteria(DetachedCriteria dc, int from, int size) {
+	public List<Slot> findByCriteria(DetachedCriteria dc, int from, int size) {
 		if (log.isDebugEnabled())
 			log.debug("Return professors from " + from + " to " + size);
 
