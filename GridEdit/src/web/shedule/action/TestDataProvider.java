@@ -20,6 +20,7 @@
 package web.shedule.action;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ public class TestDataProvider extends ActionSupport implements SessionAware {
 	private static final long serialVersionUID = 5078264277068533593L;
 	private static final Log log = LogFactory.getLog(TestDataProvider.class);
 	private Map<String, Object> session;
+	private List<String> listStrings;
 
 	public class CustomModel {
 
@@ -85,6 +87,10 @@ public class TestDataProvider extends ActionSupport implements SessionAware {
 		results = new ArrayList<CustomModel>();
 		results.add(cm1);
 		results.add(cm2);
+		listStrings=new LinkedList<String>();
+		listStrings.add("1");
+		listStrings.add("2");
+		listStrings.add("3");
 		return SUCCESS;
 	}
 
@@ -103,5 +109,11 @@ public class TestDataProvider extends ActionSupport implements SessionAware {
 
 	public List<CustomModel> getResults() {
 		return results;
+	}
+	public void setListStrings(List<String> listStrings) {
+		this.listStrings = listStrings;
+	}
+	public List<String> getListStrings() {
+		return listStrings;
 	}
 }
