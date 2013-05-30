@@ -58,7 +58,7 @@
 </head>
 <body>
 
-	
+
 	<header class="ui-widget-header">
 		<div class="ym-wrapper">
 			<div class="ym-wbox" style="padding: 5px 0 0 0;">
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 	</header>
-	
+
 
 	<nav id="nav" class="ui-widget-header">
 		<div class="ym-wrapper">
@@ -101,18 +101,13 @@
 			<s:url var="editjuryurl" action="edit-jury" />
 			<s:url var="selectprofurl" action="professor-names" />
 			<s:url var="remoteurl" action="jury-data-provider" />
-			<sjg:grid
-			    caption="Hội đồng" 
-			    dataType="json" href="%{remoteurl}" pager="true"
-				navigator="true" navigatorAdd="true" navigatorEdit="true"
-				navigatorView="false" navigatorDelete="true"
+			<sjg:grid caption="Hội đồng" dataType="json" href="%{remoteurl}"
+				pager="true" navigator="true" navigatorAdd="true"
+				navigatorEdit="true" navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
 				gridModel="gridModel" rowNum="100" editurl="%{editjuryurl}"
-				editinline="false" 
-				shrinkToFit="false" 
-				viewrecords="true"
-				width="1000" 
-				rownumbers="true">
+				editinline="false" shrinkToFit="false" viewrecords="true"
+				width="1000" rownumbers="true">
 				<sjg:gridColumn name="name" index="name" title="Name" width="150"
 					editable="true" edittype="text" sortable="true" search="false" />
 
@@ -142,18 +137,21 @@
 
 			</sjg:grid>
 			<br>
-			<div id="divlaplich" style="margin: 0px 15px 10px 0px;float: left;">
-				<form action="shedule.action">
-							<input type="submit" value="Lap lich"
-								class="ui-button ui-widget ui-state-default ui-corner-all">
-						</form>
+
+			<div id="divlaplich" style="margin: 0px 15px 10px 0px; float: left;">
+				<form action="init-list.action">
+					<input type="submit" value="Lap lich"
+						class="ui-button ui-widget ui-state-default ui-corner-all">
+				</form>
 			</div>
-			<div id="divback" >
+			
+			<div id="divback">
 				<form action="list-data-sets.action">
-							<input type="submit" value="Tro lai"
-								class="ui-button ui-widget ui-state-default ui-corner-all">
-						</form>
+					<input type="submit" value="Tro lai"
+						class="ui-button ui-widget ui-state-default ui-corner-all">
+				</form>
 			</div>
+			
 		</div>
 	</div>
 

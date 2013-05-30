@@ -1,5 +1,6 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
+<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,8 +62,8 @@
 				<div class="ym-grid linearize-level-1">
 					<div class="ym-g75 ym-gl">
 						<h1 class="ui-state-default"
-							style="background: none; border: none; margin: 0;">Lập
-							lịch bảo vệ cao học</h1>
+							style="background: none; border: none; margin: 0;">Lập lịch
+							bảo vệ cao học</h1>
 						<h4 class="ui-state-default"
 							style="background: none; border: none;">
 							Version 1.0.0
@@ -88,37 +89,93 @@
 			</div>
 		</div>
 	</nav>
+	<s:url var="remoteurl" action="test-data-provider" />
 
-	<div id="main">
+	<div id="jury">
+		<div class="ym-wrapper">
+			<h2>Lịch bảo vệ</h2>
+			<p class="text"></p>
+			<s:url var="editjuryurl" action="edit-jury" />
+			<s:url var="selectprofurl" action="professor-names" />
+			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
+				navigator="true" navigatorAdd="false" navigatorEdit="true"
+				navigatorView="false" navigatorDelete="true"
+				navigatorRefresh="false" navigatorSearch="false"
+				gridModel="gridModel" rowNum="100" editurl="%{editjuryurl}"
+				editinline="false" shrinkToFit="false" viewrecords="true"
+				width="1000" rownumbers="true" caption="Lịch bảo vệ">
+				<sjg:gridColumn name="slotDescription" index="slotDescription"
+					title="Slot" width="70" editable="true" edittype="text"
+					sortable="true" search="false" />
+				<sjg:gridColumn name="roomName" index="roomName" title="Room"
+					width="100" editable="true" edittype="text" sortable="true"
+					search="false" />
+				<sjg:gridColumn name="name" index="name" title="Name" width="150"
+					editable="true" edittype="text" sortable="true" search="false" />
+
+				<sjg:gridColumn name="presidentName" title="President" width="150"
+					editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" search="false" />
+				<sjg:gridColumn name="secretaryName" index="secretaryName"
+					title="Secretary" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+
+				<sjg:gridColumn name="examinerName1" index="examinerName1"
+					title="Examiner 1" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+				<sjg:gridColumn name="examinerName2" index="examinerName2"
+					title="Examiner 2" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+				<sjg:gridColumn name="additionalmemberName"
+					index="additionalmemberName" title="AdditionalMember" width="150"
+					editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+				<sjg:gridColumn name="title" index="title" title="Title" width="500"
+					editable="true" edittype="text" sortable="true" search="false" />
+
+			</sjg:grid>
+
+
+		</div>
+	</div>
+
+	<div id="professor">
 		<div class="ym-wrapper">
 			<%@ taglib prefix="s" uri="/struts-tags"%>
 			<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 			<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
 			<h2>Danh sách kíp bảo vệ</h2>
 			<p class="text"></p>
-			<s:url var="remoteurl" action="test-data-provider" />
+
 			<s:url var="editurl" action="edit-grid-slot" />
 			<s:url var="selectprofurl" action="slot-des" />
 			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
 				navigator="true" navigatorAdd="true"
 				navigatorAddOptions="{reloadAfterSubmit:true}" navigatorEdit="true"
 				navigatorView="false" navigatorDelete="true"
-				navigatorRefresh="false" navigatorSearch="false" gridModel="results"
-				rowNum="20" editurl="%{editurl}" editinline="false"
-				shrinkToFit="false" viewrecords="true">
-
-				<sjg:gridColumn name="id" frozen="true" index="id" title="ID"
-					width="30" formatter="integer" editable="false" sortable="false"
-					search="true" />
-				<sjg:gridColumn name="data1" title="Data 1" />
-				<s:iterator value="listString" var="column">
-					     <sjg:gridColumn name="%{column}" title="%{column}" /> 
+				navigatorRefresh="false" navigatorSearch="false"
+				gridModel="listProfessorShedules" rowNum="-1" editurl="%{editurl}"
+				editinline="false" shrinkToFit="false" viewrecords="true"
+				rownumbers="true">
+				<sjg:gridColumn name="name" title="Name"></sjg:gridColumn>
+				<s:iterator value="listSlots" var="column" status="index">
+					<sjg:gridColumn name="listRooms.%{#index.count-1}"
+						title="%{#column.des}"></sjg:gridColumn>
 				</s:iterator>
 			</sjg:grid>
-
+			<br>
+			<form action="list-jury.action">
+				<input type="submit" value="Tro lai"
+					class="ui-button ui-widget ui-state-default ui-corner-all">
+			</form>
+			<br>
 		</div>
-	</div>
 
+	</div>
 
 	<footer>
 		<div class="ym-wrapper">

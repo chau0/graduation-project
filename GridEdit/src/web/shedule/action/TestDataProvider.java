@@ -19,10 +19,12 @@
 
 package web.shedule.action;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,67 +33,161 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 
+import web.shedule.algorithm.NewSearch;
+import web.shedule.dao.JuryDao;
+import web.shedule.dao.JuryInfo;
+import web.shedule.dao.ProfessorsDao;
+import web.shedule.dao.RoomDao;
 import web.shedule.dao.SlotDao;
+import web.shedule.dao.StudentDao;
+import web.shedule.model.Jury;
+import web.shedule.model.Professors;
+import web.shedule.model.Room;
 import web.shedule.model.Slot;
+import web.shedule.model.Students;
 import web.shedule.util.Debug;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 @Result(name = "success", type = "json")
 public class TestDataProvider extends ActionSupport implements SessionAware {
-	private List<CustomModel> results;
 	private static final long serialVersionUID = 5078264277068533593L;
 	private static final Log log = LogFactory.getLog(TestDataProvider.class);
 	private Map<String, Object> session;
-	private List<String> listStrings;
+	private List<Professors> listProfessors;
+	private ProfessorsDao professorsDao = new ProfessorsDao();
+	private List<ProfessorShedule> listProfessorShedules;
+	// Your result List
+	private List<JuryInfo> gridModel;
+	// All Records
+	private Integer records = 0;
 
-	public class CustomModel {
-
-		private String data1;
-		private List<String> dataArray;
-
-		public String getData1() {
-			return data1;
-		}
-
-		public void setData1(String data1) {
-			this.data1 = data1;
-		}
-
-		public List<String> getDataArray() {
-			return dataArray;
-		}
-
-		public void setDataArray(List<String> dataArray) {
-			this.dataArray = dataArray;
-		}
-
-	}
+	private JuryDao juryDao = new JuryDao();
+	private StudentDao studentDao = new StudentDao();
+	private SlotDao slotDao = new SlotDao();
+	private RoomDao roomDao = new RoomDao();
+	List<String> listProfessorNames;
 
 	@SuppressWarnings("unchecked")
 	public String execute() {
-		CustomModel cm1 = new CustomModel();
-		cm1.setData1("data1");
-		List<String> l1 = new ArrayList<String>();
-		l1.add("test1");
-		l1.add("test2");
-		cm1.setDataArray(l1);
+		listProfessors = professorsDao.getAll();
+		DetachedCriteria criteria = DetachedCriteria.forClass(Professors.class);
+		criteria.setProjection(null);
+		criteria.setResultTransformer(Criteria.ROOT_ENTITY);
+		Object oIdSet = (Integer) this.session.get(Constants.SET);
+		int idSet = (oIdSet == null ? 13 : (Integer) oIdSet);
+		Debug.d("id set :" + idSet);
+		List<Jury> listJuries = juryDao.getListJuryByIdSet(idSet);
+		this.session.put("set", idSet);
+		List<Students> listStudents = studentDao.getAll();
+		gridModel = new LinkedList<JuryInfo>();
+		listProfessorNames = new LinkedList<String>();
+		
+		for (Professors professors : listProfessors) {
+			listProfessorNames.add(professors.getName());
+		}
+		
+		for (Jury jury : listJuries) {
+			Students student = findStudent(jury.getIdsv(), listStudents);
+			Professors supervisor = findProfessor(jury.getSupervisor(),
+					listProfessors);
+			Professors examiner1 = findProfessor(jury.getExaminer1(),
+					listProfessors);
+			Professors examiner2 = findProfessor(jury.getExaminer2(),
+					listProfessors);
+			Professors president = findProfessor(jury.getPresident(),
+					listProfessors);
+			Professors secretary = findProfessor(jury.getSecretary(),
+					listProfessors);
+			Professors additionalMember = findProfessor(
+					jury.getAdditionalmember(), listProfessors);
 
-		CustomModel cm2 = new CustomModel();
-		cm2.setData1("data2");
-		List<String> l2 = new ArrayList<String>();
-		l2.add("test3");
-		l2.add("test4");
-		cm2.setDataArray(l2);
+			if (supervisor != null && examiner1 != null && examiner2 != null
+					&& president != null && secretary != null
+					&& additionalMember != null) {
 
-		results = new ArrayList<CustomModel>();
-		results.add(cm1);
-		results.add(cm2);
-		listStrings=new LinkedList<String>();
-		listStrings.add("1");
-		listStrings.add("2");
-		listStrings.add("3");
+				JuryInfo juryInfo = new JuryInfo(jury.getId(),
+						student.getName(), student.getTitle(),
+						supervisor.getName(), examiner1.getName(),
+						examiner2.getName(), president.getName(),
+						secretary.getName(), additionalMember.getName(),
+						jury.getIdset());
+				juryInfo.setSupervisorId(supervisor.getId());
+				juryInfo.setAdditionalMemberId(additionalMember.getId());
+				juryInfo.setPresidentId(president.getId());
+				juryInfo.setSecretaryId(secretary.getId());
+				juryInfo.setExaminerId1(examiner1.getId());
+				juryInfo.setExaminerId2(examiner2.getId());
+				gridModel.add(juryInfo);
+			}
+		}
+		List<Room> listRooms = roomDao.getAll();
+		List<Slot> listSlots = slotDao.getAll();
+		NewSearch search = new NewSearch(gridModel, listProfessors,
+				listSlots.size(), listRooms.size());
+		search.localsearch(1000);
+
+		for (JuryInfo juryInfo : gridModel) {
+			Room room = listRooms.get(juryInfo.getRoomId());
+			Slot slot = listSlots.get(juryInfo.getSlotId());
+			juryInfo.setRoomName(room.getName());
+			juryInfo.setSlotDescription(slot.getDes());
+		}
+
+		Map<Integer, ProfessorShedule> professorSheduleMap = new HashMap<Integer, ProfessorShedule>();
+		for (int l = gridModel.size(), i = 0; i < l; i++) {
+			JuryInfo juryInfo = gridModel.get(i);
+			String roomName = juryInfo.getRoomName();
+			int slotId = juryInfo.getSlotId();
+			// examiner1
+			String juryExaminerName1 = juryInfo.getExaminerName1();
+			int juryExaminerId1 = juryInfo.getExaminerId1();
+			updateProfessorSheduleMap(juryExaminerId1, juryExaminerName1,
+					roomName, slotId, professorSheduleMap);
+			// examiner2
+			String juryExaminerName2 = juryInfo.getExaminerName2();
+			int juryExaminerId2 = juryInfo.getExaminerId2();
+			updateProfessorSheduleMap(juryExaminerId2, juryExaminerName2,
+					roomName, slotId, professorSheduleMap);
+			// president
+			String presidentName = juryInfo.getPresidentName();
+			int presidentId = juryInfo.getPresidentId();
+			updateProfessorSheduleMap(presidentId, presidentName, roomName,
+					slotId, professorSheduleMap);
+			// secretary
+			String secretaryName = juryInfo.getSecretaryName();
+			int secretaryId = juryInfo.getSecretaryId();
+			updateProfessorSheduleMap(secretaryId, secretaryName, roomName,
+					slotId, professorSheduleMap);
+			// additionalMem
+			String additionalMemName = juryInfo.getAdditionalmemberName();
+			int additionalMemId = juryInfo.getAdditionalMemberId();
+			updateProfessorSheduleMap(additionalMemId, additionalMemName,
+					roomName, slotId, professorSheduleMap);
+		}
+
+		listProfessorShedules = new LinkedList<ProfessorShedule>();
+		Iterator it = professorSheduleMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			ProfessorShedule pFound = (ProfessorShedule) entry.getValue();
+			pFound.mapRoomToList(listSlots.size());
+			listProfessorShedules.add(pFound);
+			it.remove(); //
+		}
 		return SUCCESS;
+	}
+
+	private void updateProfessorSheduleMap(int proId, String proName,
+			String roomName, int slotId, Map<Integer, ProfessorShedule> map) {
+		ProfessorShedule pFound = map.get(proId);
+		if (pFound == null) {
+			pFound = new ProfessorShedule();
+			pFound.setId(proId);
+			pFound.setName(proName);
+			map.put(proId, pFound);
+		}
+		pFound.mapRoom(slotId, roomName);
 	}
 
 	public String getJSON() {
@@ -103,17 +199,65 @@ public class TestDataProvider extends ActionSupport implements SessionAware {
 		this.session = session;
 	}
 
-	public void setResults(List<CustomModel> results) {
-		this.results = results;
+	public void setListProfessors(List<Professors> listProfessors) {
+		this.listProfessors = listProfessors;
 	}
 
-	public List<CustomModel> getResults() {
-		return results;
+	public List<Professors> getListProfessors() {
+		return listProfessors;
 	}
-	public void setListStrings(List<String> listStrings) {
-		this.listStrings = listStrings;
+
+	public List<ProfessorShedule> getListProfessorShedules() {
+		return listProfessorShedules;
 	}
-	public List<String> getListStrings() {
-		return listStrings;
+
+	public void setListProfessorShedules(
+			List<ProfessorShedule> listProfessorShedules) {
+		this.listProfessorShedules = listProfessorShedules;
+	}
+
+	private Professors findProfessor(int proId, List<Professors> listProfessors) {
+		for (Professors p : listProfessors) {
+			if (p.getId() == proId) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	private Students findStudent(int idstu, List<Students> listStudent) {
+		for (Students p : listStudent) {
+			if (p.getId() == idstu) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	public Integer getRecords() {
+		return records;
+	}
+
+	/**
+	 * @return an collection that contains the actual data
+	 */
+	public List<JuryInfo> getGridModel() {
+		return gridModel;
+	}
+
+	/**
+	 * @param gridModel
+	 *            an collection that contains the actual data
+	 */
+	public void setGridModel(List<JuryInfo> gridModel) {
+		this.gridModel = gridModel;
+	}
+
+	public void setListProfessorNames(List<String> listProfessorNames) {
+		this.listProfessorNames = listProfessorNames;
+	}
+
+	public List<String> getListProfessorNames() {
+		return listProfessorNames;
 	}
 }

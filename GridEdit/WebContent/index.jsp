@@ -1,1 +1,1 @@
-<% response.sendRedirect("init-list.action"); %>
+<% response.sendRedirect("list-data-sets.action"); %>
