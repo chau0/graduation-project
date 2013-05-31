@@ -94,7 +94,7 @@
 			<%@ taglib prefix="s" uri="/struts-tags"%>
 			<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 			<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
-			<h2>Lịch giảng viên</h2>
+			<h2>Danh sách kíp thời gian</h2>
 
 			<p class="text"></p>
 			<s:url var="remoteurl" action="slot-data-provider" />
@@ -117,7 +117,7 @@
 				editinline="false" 
 				shrinkToFit="false" 
 				viewrecords="true"
-				caption="Lịch giảng viên"
+				caption="Kíp thời gian"
 				
 				>
 				<sjg:gridColumn name="id" frozen="true" index="id" title="ID"

@@ -148,7 +148,7 @@
 			<%@ taglib prefix="s" uri="/struts-tags"%>
 			<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 			<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
-			<h2>Danh sách kíp bảo vệ</h2>
+			<h2>Lịch giảng viên</h2>
 			<p class="text"></p>
 
 			<s:url var="editurl" action="edit-grid-slot" />
@@ -160,11 +160,12 @@
 				navigatorRefresh="false" navigatorSearch="false"
 				gridModel="listProfessorShedules" rowNum="-1" editurl="%{editurl}"
 				editinline="false" shrinkToFit="false" viewrecords="true"
-				rownumbers="true">
+				rownumbers="true"  caption="Lịch giảng viên"
+				>
 				<sjg:gridColumn name="name" title="Name"></sjg:gridColumn>
 				<s:iterator value="listSlots" var="column" status="index">
 					<sjg:gridColumn name="listRooms.%{#index.count-1}"
-						title="%{#column.des}"></sjg:gridColumn>
+						title="%{#column.des}" width="70"></sjg:gridColumn>
 				</s:iterator>
 			</sjg:grid>
 			<br>

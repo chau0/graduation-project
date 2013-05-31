@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 
+import web.shedule.model.Jury;
 import web.shedule.model.Professors;
 import web.shedule.util.Debug;
 
@@ -53,15 +54,18 @@ public class ProfessorsDao extends
 	public int nextProfessors() {
 		if (log.isDebugEnabled())
 			log.debug("find next customer number");
-
 		try {
 			DetachedCriteria dc = DetachedCriteria.forClass(Professors.class);
 			Criteria criteria = dc.getExecutableCriteria(hSession);
 			criteria.setProjection(Projections.max("id"));
-			return ((Integer) criteria.list().get(0)).intValue() + 1;
+			List list = criteria.list();
+			if (list.get(0)!=null) {
+				return ((Integer) criteria.list().get(0)).intValue() + 1;
+			}
+			return 1;
 		} catch (HibernateException e) {
 			log.error(e.getMessage(), e);
-			throw e;
+			return 1;
 		}
 	}
 
