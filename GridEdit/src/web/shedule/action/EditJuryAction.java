@@ -80,6 +80,7 @@ public class EditJuryAction extends ActionSupport implements SessionAware {
 				Jury jury = juryDao.get(Integer.parseInt(id));
 				Students students=studentDao.get(jury.getIdsv());
 				students.setName(name);
+				students.setTitle(title);
 				studentDao.update(students);
 				jury.setAdditionalmember(Integer.parseInt(additionalmemberName));
 				jury.setExaminer1(Integer.parseInt(examinerName1));

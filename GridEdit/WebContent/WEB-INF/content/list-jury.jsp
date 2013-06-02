@@ -1,3 +1,4 @@
+<%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
 <%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
@@ -110,15 +111,6 @@
 				width="1000" rownumbers="true">
 				<sjg:gridColumn name="name" index="name" title="Name" width="150"
 					editable="true" edittype="text" sortable="true" search="false" />
-
-				<sjg:gridColumn name="presidentName" title="President" width="150"
-					editable="true" edittype="select"
-					editoptions="{ dataUrl : '%{selectprofurl}' }" search="false" />
-				<sjg:gridColumn name="secretaryName" index="secretaryName"
-					title="Secretary" width="150" editable="true" edittype="select"
-					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
-					search="false" />
-
 				<sjg:gridColumn name="examinerName1" index="examinerName1"
 					title="Examiner 1" width="150" editable="true" edittype="select"
 					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
@@ -127,6 +119,14 @@
 					title="Examiner 2" width="150" editable="true" edittype="select"
 					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
 					search="false" />
+				<sjg:gridColumn name="presidentName" title="President" width="150"
+					editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" search="false" />
+				<sjg:gridColumn name="secretaryName" index="secretaryName"
+					title="Secretary" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+
 				<sjg:gridColumn name="additionalmemberName"
 					index="additionalmemberName" title="AdditionalMember" width="150"
 					editable="true" edittype="select"
@@ -144,20 +144,16 @@
 						class="ui-button ui-widget ui-state-default ui-corner-all">
 				</form>
 			</div>
-			
+
 			<div id="divback">
 				<form action="list-data-sets.action">
 					<input type="submit" value="Tro lai"
 						class="ui-button ui-widget ui-state-default ui-corner-all">
 				</form>
 			</div>
-			
+
 		</div>
 	</div>
-
-
-
-
 
 	<footer>
 		<div class="ym-wrapper">
