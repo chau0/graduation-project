@@ -25,7 +25,6 @@
 		ajaxhistory="%{ajaxhistory}" defaultIndicator="myDefaultIndicator"
 		defaultLoadingText="Please wait ..." />
 </s:if>
-
 <s:else>
 	<sj:head debug="true" compressed="true" jquerytheme="%{theme}"
 		loadFromGoogle="%{google}" ajaxhistory="%{ajaxhistory}"
@@ -58,8 +57,6 @@
 	src="<s:url value="/js/extendplugin.js" />"></script>
 </head>
 <body>
-
-
 	<header class="ui-widget-header">
 		<div class="ym-wrapper">
 			<div class="ym-wbox" style="padding: 5px 0 0 0;">
@@ -93,32 +90,30 @@
 			</div>
 		</div>
 	</nav>
+	<s:url var="remoteurl" action="test-data-provider" />
 
-	<div id="main">
+	<div id="jury">
 		<div class="ym-wrapper">
-
-			<h2>Danh sách hội đồng bảo vệ</h2>
+			<h2>Lịch bảo vệ</h2>
 			<p class="text"></p>
 			<s:url var="editjuryurl" action="edit-jury" />
 			<s:url var="selectprofurl" action="professor-names" />
-			<s:url var="remoteurl" action="jury-data-provider" />
-			<sjg:grid caption="Hội đồng" dataType="json" href="%{remoteurl}"
-				pager="true" navigator="true" navigatorAdd="true"
-				navigatorEdit="true" navigatorView="false" navigatorDelete="true"
+			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
+				navigator="true" navigatorAdd="false" navigatorEdit="true"
+				navigatorView="false" navigatorDelete="true"
 				navigatorRefresh="false" navigatorSearch="false"
 				gridModel="gridModel" rowNum="100" editurl="%{editjuryurl}"
 				editinline="false" shrinkToFit="false" viewrecords="true"
-				width="1000" rownumbers="true">
+				width="1000" rownumbers="true" caption="Lịch bảo vệ">
+				<sjg:gridColumn name="slotDescription" index="slotDescription"
+					title="Slot" width="70" editable="true" edittype="text"
+					sortable="true" search="false" />
+				<sjg:gridColumn name="roomName" index="roomName" title="Room"
+					width="100" editable="true" edittype="text" sortable="true"
+					search="false" />
 				<sjg:gridColumn name="name" index="name" title="Name" width="150"
 					editable="true" edittype="text" sortable="true" search="false" />
-				<sjg:gridColumn name="examinerName1" index="examinerName1"
-					title="Examiner 1" width="150" editable="true" edittype="select"
-					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
-					search="false" />
-				<sjg:gridColumn name="examinerName2" index="examinerName2"
-					title="Examiner 2" width="150" editable="true" edittype="select"
-					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
-					search="false" />
+
 				<sjg:gridColumn name="presidentName" title="President" width="150"
 					editable="true" edittype="select"
 					editoptions="{ dataUrl : '%{selectprofurl}' }" search="false" />
@@ -127,6 +122,14 @@
 					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
 					search="false" />
 
+				<sjg:gridColumn name="examinerName1" index="examinerName1"
+					title="Examiner 1" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
+				<sjg:gridColumn name="examinerName2" index="examinerName2"
+					title="Examiner 2" width="150" editable="true" edittype="select"
+					editoptions="{ dataUrl : '%{selectprofurl}' }" sortable="true"
+					search="false" />
 				<sjg:gridColumn name="additionalmemberName"
 					index="additionalmemberName" title="AdditionalMember" width="150"
 					editable="true" edittype="select"
@@ -136,34 +139,49 @@
 					editable="true" edittype="text" sortable="true" search="false" />
 
 			</sjg:grid>
-			<br>
 
-			<div id="divlaplich" style="margin: 0px 15px 10px 0px; float: left;">
-				<form action="init-list.action">
-					<input type="submit" value="Lap lich"
-						class="ui-button ui-widget ui-state-default ui-corner-all">
-				</form>
-			</div>
-
-			<div id="divback">
-				<form action="list-data-sets.action">
-					<input type="submit" value="Tro lai"
-						class="ui-button ui-widget ui-state-default ui-corner-all">
-				</form>
-			</div>
 
 		</div>
 	</div>
 
+	<div id="professor">
+		<div class="ym-wrapper">
+			<%@ taglib prefix="s" uri="/struts-tags"%>
+			<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
+			<%@ taglib prefix="sjg" uri="/struts-jquery-grid-tags"%>
+			<h2>Lịch giảng viên</h2>
+			<p class="text"></p>
+
+			<s:url var="editurl" action="edit-grid-slot" />
+			<s:url var="selectprofurl" action="slot-des" />
+			<sjg:grid dataType="json" href="%{remoteurl}" pager="true"
+				navigator="true" navigatorAdd="true"
+				navigatorAddOptions="{reloadAfterSubmit:true}" navigatorEdit="true"
+				navigatorView="false" navigatorDelete="true"
+				navigatorRefresh="false" navigatorSearch="false"
+				gridModel="listProfessorShedules" rowNum="-1" editurl="%{editurl}"
+				editinline="false" shrinkToFit="false" viewrecords="true"
+				rownumbers="true"  caption="Lịch giảng viên"
+				>
+				<sjg:gridColumn name="name" title="Name"></sjg:gridColumn>
+				<s:iterator value="listSlots" var="column" status="index">
+					<sjg:gridColumn name="listRooms.%{#index.count-1}"
+						title="%{#column.des}" width="70"></sjg:gridColumn>
+				</s:iterator>
+			</sjg:grid>
+			<br>
+			<form action="list-jury.action">
+				<input type="submit" value="Trở lại"
+					class="ui-button ui-widget ui-state-default ui-corner-all">
+			</form>
+			<br>
+		</div>
+
+	</div>
+
 	<footer>
 		<div class="ym-wrapper">
-			<div class="ym-wbox">
-				<p style="text-align: center;">
-
-					Layout based on <a href="http://www.yaml.de/"
-						title="OpenSource CSS Layout">YAML</a>
-				</p>
-			</div>
+			<div class="ym-wbox"></div>
 		</div>
 	</footer>
 
