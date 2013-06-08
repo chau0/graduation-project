@@ -131,7 +131,6 @@ public class SheduleDataProvider extends ActionSupport implements SessionAware {
 			juryInfo.setRoomName(room.getName());
 			juryInfo.setSlotDescription(slot.getDes());
 		}
-
 		return SUCCESS;
 	}
 
